@@ -9,6 +9,7 @@
 typedef struct telm_familly *address;
 typedef char *infotype;
 
+// data dari informasi person
 typedef struct dataInfo
 {
     char nama[100];
@@ -17,6 +18,7 @@ typedef struct dataInfo
     boolean alive;
 } dataInfo;
 
+// node person dalam silsilah
 typedef struct telm_familly
 {
     dataInfo info;
@@ -27,17 +29,21 @@ typedef struct telm_familly
     address node_ibu;
 } telm_familly;
 
+// pointer of root
 typedef struct telm_root
 {
     address root;
 } telm_root;
 
+// initiasi root
 void init_Root(telm_root *L)
 {
     L->root = NULL;
 }
 
 // keterangan data module
+// data info module
+// meng input data info unknown
 dataInfo ket_unknown()
 {
     dataInfo ket;
@@ -48,6 +54,7 @@ dataInfo ket_unknown()
     return ket;
 }
 
+// meng input data info yang diketuhai programer
 dataInfo ket_available(infotype nama, int age, char gender)
 {
     dataInfo person;
@@ -65,6 +72,7 @@ dataInfo ket_available(infotype nama, int age, char gender)
     return person;
 }
 
+// meng input data info yang diinput user
 dataInfo ket_input()
 {
     dataInfo person;
@@ -102,18 +110,21 @@ address alok_pointer(dataInfo _info)
     return P;
 }
 
+// alokasi node dengan datainfo unknown
 address alok_unknown_pers()
 {
     dataInfo person = ket_unknown();
     return alok_pointer(person);
 }
 
+// alokasi node dengan input programer
 address alok_available_pers(infotype name, int age, char gender)
 {
     dataInfo person = ket_available(name, age, gender);
     return alok_pointer(person);
 }
 
+// alokasi node dengan input user
 address alok_input_pers()
 {
     dataInfo person = ket_input();
@@ -140,6 +151,7 @@ void print_datainfo(dataInfo X)
 
 // pointer allocation module
 // birth module
+// memberikan suatu node dengan anak yang tidak diketahui
 void point_birth_unknown(telm_familly *X)
 {
     address node = alok_unknown_pers();
@@ -147,6 +159,7 @@ void point_birth_unknown(telm_familly *X)
     X->node_fs = node;
 }
 
+// memberikan suatu node dengan anak yang diketahui programer
 void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
 {
     address node = alok_available_pers(nama, age, gender);
@@ -165,6 +178,7 @@ void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
     }
 }
 
+// memberikan suatu node dengan anak yang diinput user
 void point_birth_input(telm_familly *X)
 {
     address node;
@@ -227,6 +241,7 @@ void point_birth_input(telm_familly *X)
 }
 
 // marriage module
+// menikahkan node dengan node yang tidak diketahui
 void point_marriage_unknown(telm_familly *X)
 {
     address node = alok_unknown_pers();
@@ -236,6 +251,7 @@ void point_marriage_unknown(telm_familly *X)
     }
 }
 
+// menikahkan node dengan node yang diketahui programer
 void point_marriage_available(telm_familly *X, telm_familly *Y)
 {
     if (X->node_mate == NULL)
@@ -256,6 +272,7 @@ void point_marriage_available(telm_familly *X, telm_familly *Y)
     }
 }
 
+// menikahkan node dengan node yang diinput user
 void point_marriage_input(telm_familly *X)
 {
     address node = alok_input_pers();
@@ -273,17 +290,20 @@ void point_marriage_input(telm_familly *X)
     }
 }
 
+// mengubah status hidup node
 void point_kill(telm_familly *X)
 {
     X->info.alive = false;
 }
 
+// belum beres module search orang nya
 void search(infotype name){
     
 }
 
 int main()
 {
+    // masih testing module
     telm_root test;
     init_Root(&test);
     Root(test) = alok_unknown_pers();
