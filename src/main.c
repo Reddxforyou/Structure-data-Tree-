@@ -54,7 +54,7 @@ dataInfo ket_unknown()
     return ket;
 }
 
-// meng input data info yang diketuhai programer
+// meng input data info yang diketahui programer
 dataInfo ket_available(infotype nama, int age, char gender)
 {
     dataInfo person;
@@ -80,7 +80,7 @@ dataInfo ket_input()
     printf("Masukkan nama : ");
     scanf("%s", person.nama);
     printf("Masukkan umur : ");
-    scanf("%d", &person.age);
+    scanf("%d", &person.age);	
     do
     {
         printf("Gender : ");
@@ -301,18 +301,31 @@ void search(infotype name){
     
 }
 
-int main()
-{
+// Fungsi untuk mencetak pohon secara rekursif
+void printTree(address root, int level) {
+    if (root == NULL) return;
+    int i;
+    for (i = 0; i < level; i++) {
+        printf("	|");
+    }
+    printf("%s\n", root->info.nama);
+    printTree(root->node_fs, level + 1);
+    printTree(root->node_nb, level);
+}
+
+int main() {
     // masih testing module
     telm_root test;
     init_Root(&test);
-    Root(test) = alok_unknown_pers();
+    Root(test) = alok_available_pers("Charles1", 60, 'L');
+    point_marriage_input(Root(test));
     point_birth_input(Root(test));
     point_birth_input(Root(test));
     point_birth_input(Root(test));
-    print_datainfo(Root(test)->info);
-    print_datainfo(Root(test)->node_fs->info);
-    print_datainfo(Root(test)->node_fs->node_nb->info);
+
+    // Cetak struktur pohon
+    printf("Silsilah Anggota Kerajaan:\n");
+    printTree(Root(test), 0);
 
     return 0;
 }
