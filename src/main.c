@@ -9,6 +9,8 @@
 typedef struct telm_familly *address;
 typedef char *infotype;
 
+int choice;
+
 // data dari informasi person
 typedef struct dataInfo
 {
@@ -313,9 +315,104 @@ void printTree(address root, int level) {
     printTree(root->node_nb, level);
 }
 
-int main() {
-    // masih testing module
-    telm_root test;
+void gameStart()
+{   
+    system("cls");
+    printf("\n\n");
+	printf("\n\t\t\t\t                                        _____________                          ");
+	printf("\n\t\t\t\t                                       |'+.   |   .+'|                         ");
+	printf("\n\t\t\t\t                                       |___'+.|.+'___|                         ");
+	printf("\n\t\t\t\t                                       |   .+'|'+.   |                         ");
+	printf("\n\t\t\t\t                                       |.+'___|___'+.|                         ");
+	printf("\n\t\t\t\t                                       |                                       ");
+	printf("\n\t\t\t\t                                       |                                       ");
+	printf("\n\t\t\t\t                                      / \\                                      ");
+	printf("\n\t\t\t\t                                     /   \\                                     ");
+	printf("\n\t\t\t\t                                    /     \\                                    ");
+	printf("\n\t\t\t\t                                   /       \\                                   ");
+	printf("\n\t\t\t\t                                  /         \\                                  ");
+	printf("\n\t\t\t\t                              __ /  __   __  \\ __                              "); 
+	printf("\n\t\t\t\t                             |  |__|  |_|  |__|  |                             ");
+	printf("\n\t\t\t\t                             \\                   /                             ");
+	printf("\n\t\t\t\t                          /\\  \\                 /  /\\                          ");
+	printf("\n\t\t\t\t                         /  \\  \\_______________/  /  \\                         ");
+	printf("\n\t\t\t\t                        /    \\  |   _     _   |  /    \\                        ");
+	printf("\n\t\t\t\t                       /      \\ |  |_|   |_|  | /      \\                       ");
+	printf("\n\t\t\t\t                      /________\\|_____________|/________\\                      ");
+	printf("\n\t\t\t\t                      |         |   _     _   |         |                      ");
+	printf("\n\t\t\t\t                      |   __    |  |_|   |_|  |    __   |                      ");
+	printf("\n\t\t\t\t                      |  |__|   |_____________|   |__|  |                      ");
+	printf("\n\t\t\t\t               _   _  |_        |   _     _   |        _|  _   _               ");
+	printf("\n\t\t\t\t              | |_| |_| |_______|  |_|   |_|  |_______| |_| |_| |              ");
+	printf("\n\t\t\t\t              |    _    |    __ |  __     __  | __    |    _    |              ");
+	printf("\n\t\t\t\t     _   _   _|   |_|   |   |  |__|  |___|  |__|  |   |   |_|   |_   _   _     ");
+	printf("\n\t\t\t\t    | |_| |_| |         |   |   __           __   |   |         | |_| |_| |    ");
+	printf("\n\t\t\t\t    |         |    _    |   |  |__|         |__|  |   |    _    |         |    ");
+	printf("\n\t\t\t\t    |    _    |   |_|   |   |       _______       |   |   |_|   |    _    |    ");
+	printf("\n\t\t\t\t    |   |_|   |         |   |      |   |   |      |   |         |   |_|   |    ");
+	printf("\n\t\t\t\t    |         |         |   |      |  0|0  |      |   |         |         |    ");
+	printf("\n\t\t\t\t____|_________|_________|___|______|___|___|______|___|_________|_________|____");
+	printf("\n\t\t   _  _   __   __   _   __    ___   _    _     ___   ____     ___   ____    __   _____   _____   __   __   _");
+	printf("\n\t\t  | |/ / |  | |  \\ | | |  \\  |   | | \\  / |   |   | |  __|   |   \\ | __ \\  |  | |_   _| |  _  | |  | |  \\ | |");
+	printf("\n\t\t  |   /  |  | |   \\| | | _ \\ | | | |  \\/  |   | | | | |__    | | / | || /  |  |   | |   | |_| | |  | |   \\| |");
+	printf("\n\t\t  |   \\  |  | | |\\   | |   / | | | | |\\/| |   | | | |  __|   | | \\ | |\\ \\  |  |   | |   |  _  | |  | | |\\   |");
+	printf("\n\t\t  |_|\\_\\ |__| |_| \\__| |__/  |___| |_|  |_|   |___| |_|      |___/ |_| \\_\\ |__|   |_|   |_| |_| |__| |_| \\__|");
+    printf("\n\n\t\t\t\t\t\t\t    Press Enter To Continue");
+    getchar();     //Menunggu untuk menekan enter
+    system("cls"); // Membersihkan layar terminal
+    mainMenu();
+}
+
+void mainMenu()
+{
+    do
+    {
+        system("cls");
+        printf("\n\n\n\n\n\n\n\n");
+        printf("\n\t\t\t\t\t\t_________________.===========.___________________");
+        printf("\n\t\t\t\t\t\t|                |=MAIN MENU=|                  |");
+        printf("\n\t\t\t\t\t\t|                '==========='                  |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                1. Tambahkan Node              |");
+        printf("\n\t\t\t\t\t\t|                2. Aturan Kerajaab             |");
+        printf("\n\t\t\t\t\t\t|                3.                             |");
+        printf("\n\t\t\t\t\t\t|                0. Keluar                      |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|_______________________________________________|");
+        printf("\n\t\t\t\t\t\t\t\tPilih menu (0/1/2/3): ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+        	Start();
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 0:
+            printf("\t\t\t\t\t\tTerima kasih telah bermain!\n");
+            break;
+        default:
+            printf("\t\t\t\t\tPilihan tidak valid. Silakan pilih lagi.\n");
+        }
+        printf("\t\t\t\t\t\tTekan Enter untuk melanjutkan :"); // Teks "tekan enter untuk melanjutkan"
+        getchar();                                             // Mengambil karakter dari input (enter) untuk melanjutkan
+        getchar();                                             // Untuk menunggu sampai pengguna menekan Enter
+    } while (choice != 0);
+}
+
+void Start()
+{
+	telm_root test;
     init_Root(&test);
     Root(test) = alok_available_pers("Charles1", 60, 'L');
     point_marriage_input(Root(test));
@@ -326,6 +423,13 @@ int main() {
     // Cetak struktur pohon
     printf("Silsilah Anggota Kerajaan:\n");
     printTree(Root(test), 0);
+}
+
+int main() {
+    system("Color 0B");
+
+    // Panggil fungsi gameStart saat program dimulai
+    gameStart();
 
     return 0;
 }
