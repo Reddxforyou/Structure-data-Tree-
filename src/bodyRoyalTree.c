@@ -184,6 +184,9 @@ void point_birth_unknown(telm_familly *X)
     if (X->node_fs == NULL)
     {
         X->node_fs = node;
+        if(X->node_mate != NULL){
+            X->node_mate->node_fs = node;
+        }
     }else{
         address temp = X->node_fs;
         while (temp->node_nb != NULL)
@@ -206,6 +209,9 @@ void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
     if (X->node_fs == NULL)
     {
         X->node_fs = node;
+        if(X->node_mate != NULL){
+            X->node_mate->node_fs = node;
+        }
     }
     else
     {
@@ -258,6 +264,9 @@ void point_birth_input(telm_familly *X)
     if (X->node_fs == NULL)
     {
         X->node_fs = node;
+        if(X->node_mate != NULL){
+            X->node_mate->node_fs = node;
+        }
     }
     else
     {
