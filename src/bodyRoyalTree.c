@@ -411,3 +411,144 @@ void trav_pre_order(address root){
     trav_pre_order(root->node_fs);
     trav_pre_order(root->node_nb);
 }
+
+// Function untuk menghitung nilai maksimum kedalaman dari tree
+// author: Alya Naila Putri Ashadilla
+// I.S. : Maksimum kedalaman dari tree belum diketahui 
+// F.S. : Maksimum kedalaman dari tree sudah diketahui
+int depth(address node) {
+    if (node == NULL) { //jika node kosong, maka akan mengembalikan nilai 0
+        return 0;
+    } else { //jika node tidak kosong 
+        int maxDepth = 0;
+
+        if (node->node_fs != NULL) {// jika anak dari node tidak kosong
+             // Hitung kedalaman dari anak pertama (fs) dari node
+            int depth_fs = depth(node->node_fs);
+            if (depth_fs > maxDepth) {// Ubah nilai maksimal dari kedalaman dengan kedalaman anak pertama, jika nilainya lebih besar
+                maxDepth = depth_fs;
+            }
+        }
+        if (node->node_nb != NULL) { // jika saudara dari node tidak kosong
+            int depth_nb = depth(node->node_nb);
+
+            if (depth_nb > maxDepth) {  // Ubah nilai maksimal dari kedalaman dengan kedalaman saudara, jika nilainya lebih besar
+                maxDepth = depth_nb;
+            }
+        }
+        return maxDepth + 1;
+    }
+}
+
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int countGenerations(address root, infotype name) {
+    // Jika root kosong, maka generasi tidak terdefinisi
+    if (root == NULL) {
+        printf("Tree is empty.\n");
+        return 0;
+    } else {
+        address node = search(root, name);
+        if (node == NULL) {
+            printf("Person with name '%s' not found.\n", name);
+            return 0;
+        } else if (node->node_parrent == NULL) { // Jika node adalah akar, maka generasinya adalah 1
+            return 1;
+        } else {
+            // Hitung kedalaman dari akar pohon
+            int treeDepth = depth(root);
+
+            // Hitung kedalaman dari node yang dicari
+            int nodeDepth = depth(node);
+
+            // Generasi adalah selisih antara kedalaman akar pohon dan kedalaman node
+            return treeDepth - nodeDepth + 1;
+        }
+    }
+}
+
+
+
+// Function untuk menghitung anggota keluarga yang masih hidup
+// author: Alya Naila Putri Ashadilla
+// I.S. : anggota keluarga yang masih hidup belum diketahui 
+// F.S. : anggota keluarga yang masih hidup sudah diketahui
+int countLivingFamilyMembers(address node) {
+    int count = 0;
+    if (node == NULL){ // Jika node kosong, maka akan mengembalikan nilai 0
+        return 0;
+    } else if(node->info.alive == true){ //jika status hidup node bersifat true maka nilai count akan bertambah
+        count++;
+    }
+
+    //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
+    count +=countLivingFamilyMembers(node->node_mate);
+    count +=countLivingFamilyMembers(node->node_fs);
+    count +=countLivingFamilyMembers(node->node_nb);
+
+    return count;
+}
+
+// Fungsi untuk memprediksi pewaris takhta selanjutnya dari suatu node
+// author: Alya
+// I.S : nama pewaris takhta belum diketahui
+// F.S : nama pewaris takhta telah diketahui
+// void successorPrediction(address root, char name) {
+//     if (root == NULL) {
+//         return NULL;
+//     }
+
+//     // Cari node dengan nama yang sesuai
+//     address current = root;
+//     while (current != NULL) {
+//         if (strcmp(current->info.nama, name) == 0) {
+//             break;
+//         }
+//         current = current->node_nb;
+//     }
+
+//     if (current == NULL) {
+//         printf("Person with name '%s' not found.\n", name);
+//         return NULL;
+//     }
+
+//     // Lakukan prediksi berdasarkan aturan penurunan tahta
+//     if (current->node_fs != NULL && current->node_fs->info.alive == true) {
+//     // Jika memiliki anak dan masih hidup, pewaris tahta adalah anak pertama yang masih hidup
+//     return current->node_fs;
+//     } else if (current->node_nb != NULL) {
+//         // Jika tidak memiliki anak tapi memiliki saudara, pewaris tahta adalah saudara pertama yang masih hidup
+//         address temp = current->node_nb;
+//         while (temp != NULL && temp->info.alive != true) {
+//             temp = temp->node_nb;
+//         }
+//         if (temp != NULL && temp->info.alive) {
+//             return temp;
+//         }
+//     } else {
+//         // Jika tidak memiliki anak dan saudara, cari pewaris tahta berdasarkan aturan penurunan tahta
+//         if (current->node_parrent != NULL) {
+//             // Jika ada orang tua, cari pewaris tahta di antara sepupu
+//             address temp = current->node_parrent->node_parrent;
+//             while (temp != NULL) {
+//                 if (temp->node_fs != NULL && temp->node_fs->info.alive) {
+//                     return temp->node_fs;
+//                 }
+//                 temp = temp->node_parrent;
+//             }
+//             // Jika tidak ditemukan di antara sepupu, maka cari di antara saudara-saudara orang tua
+//             temp = current->node_parrent->node_nb;
+//             while (temp != NULL) {
+//                 if (temp->info.alive) {
+//                     return temp;
+//                 }
+//                 temp = temp->node_nb;
+//             }
+//         }
+//         printf("Unable to predict successor for '%s'.\n", name);
+//         return NULL;
+//     }
+
+// }

@@ -165,5 +165,11 @@ void printTree(address root, int level);
 // F.S. : Tree dicetak secara pre-order
 void trav_pre_order(address root);
 
+// Fungsi untuk menghitung kedalaman dari tree
+// author: Alya Naila Putri Ashadilla
+// I.S. : kedalaman belum diketahui 
+// F.S. : kedalaman sudah di ketahui
+int Depth(telm_familly *node);
+
 
 #endif
