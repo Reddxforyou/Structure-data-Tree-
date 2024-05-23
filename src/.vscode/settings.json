@@ -1,3 +1,8 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "files.associations": {
+        "stdio.h": "c",
+        "silan.h": "c",
+        "conio.h": "c"
+    }
 }
