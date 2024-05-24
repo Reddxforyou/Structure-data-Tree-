@@ -169,11 +169,18 @@ void trav_pre_order(address root);
 
 void gameStart();
 
-void Start();
+void addMember();
 
 void mainMenu();
 
 void Aturan();
 
+boolean isEmpty(telm_root L);
+
+void deleteNode(telm_familly **root, char *name);
+
+void Dealloc(address *node);
+
+int countLastDescendants(address node);
 
 #endif
