@@ -180,6 +180,10 @@ void serialize_Node(FILE *file, address node, boolean isRoot);
 // F.S : file sudah disimpan
 void save_Tree_To_File(const char *filename, telm_root *familyTree);
 
+void add_member(address root);
+
+void make_tree(telm_root *familyTree);
+
 
 
 #endif
