@@ -222,6 +222,7 @@ void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
         }
         temp->node_nb = node;
     }
+    X->node_fs->node_parrent = X;
 }
 
 // Prosedur memberikan suatu node dengan anak yang diinput user
@@ -495,60 +496,70 @@ int countLivingFamilyMembers(address node) {
 // author: Alya
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
-// void successorPrediction(address root, char name) {
-//     if (root == NULL) {
-//         return NULL;
-//     }
+void successorPrediction(address root, infotype name) {
+    if (root == NULL) {
+        printf("Tree is empty.\n");
+        return;
+    }
 
-//     // Cari node dengan nama yang sesuai
-//     address current = root;
-//     while (current != NULL) {
-//         if (strcmp(current->info.nama, name) == 0) {
-//             break;
-//         }
-//         current = current->node_nb;
-//     }
+    // Cari node dengan nama yang sesuai
+    address current = search(root, name);;
 
-//     if (current == NULL) {
-//         printf("Person with name '%s' not found.\n", name);
-//         return NULL;
-//     }
+    if (current == NULL) {
+        printf("Person with name '%s' not found.\n", name); 
+    }else {
+        // Lakukan prediksi berdasarkan aturan penurunan tahta
+        // Jika memiliki anak dan masih hidup, pewaris tahta adalah anak pertama yang masih hidup
+        if ((current->node_fs != NULL) && (current->node_fs->info.alive == true)) {
+            printf("Predicted heir: %s\n", current->node_fs->info.nama);
+        }
 
-//     // Lakukan prediksi berdasarkan aturan penurunan tahta
-//     if (current->node_fs != NULL && current->node_fs->info.alive == true) {
-//     // Jika memiliki anak dan masih hidup, pewaris tahta adalah anak pertama yang masih hidup
-//     return current->node_fs;
-//     } else if (current->node_nb != NULL) {
-//         // Jika tidak memiliki anak tapi memiliki saudara, pewaris tahta adalah saudara pertama yang masih hidup
-//         address temp = current->node_nb;
-//         while (temp != NULL && temp->info.alive != true) {
-//             temp = temp->node_nb;
-//         }
-//         if (temp != NULL && temp->info.alive) {
-//             return temp;
-//         }
-//     } else {
-//         // Jika tidak memiliki anak dan saudara, cari pewaris tahta berdasarkan aturan penurunan tahta
-//         if (current->node_parrent != NULL) {
-//             // Jika ada orang tua, cari pewaris tahta di antara sepupu
-//             address temp = current->node_parrent->node_parrent;
-//             while (temp != NULL) {
-//                 if (temp->node_fs != NULL && temp->node_fs->info.alive) {
-//                     return temp->node_fs;
-//                 }
-//                 temp = temp->node_parrent;
-//             }
-//             // Jika tidak ditemukan di antara sepupu, maka cari di antara saudara-saudara orang tua
-//             temp = current->node_parrent->node_nb;
-//             while (temp != NULL) {
-//                 if (temp->info.alive) {
-//                     return temp;
-//                 }
-//                 temp = temp->node_nb;
-//             }
-//         }
-//         printf("Unable to predict successor for '%s'.\n", name);
-//         return NULL;
-//     }
+        // Jika tidak memiliki anak tapi memiliki saudara, pewaris tahta adalah saudara pertama yang masih hidup
+        if (current->node_nb != NULL) {
+            address temp = current->node_nb;
+            while (temp != NULL && temp->info.alive != true) {
+                temp = temp->node_nb;
+            }
+            if (temp != NULL) {
+                printf("Predicted heir: %s\n", temp->info.nama);
+            } 
+        }
 
-// }
+        // Cari pewaris tahta di antara saudara-saudara orang tua
+        if (current->node_parrent != NULL && current->node_parrent->node_nb != NULL) {
+            address temp = current->node_parrent->node_nb;
+            while (temp != NULL && temp->info.alive != true) {
+                temp = temp->node_nb;
+            }
+            if (temp != NULL) {
+                    printf("Predicted heir: %s\n", temp->info.nama);
+                    return;
+            }
+
+        }
+
+        //Jika tidak ada saudara dari orang tua, cari pewaris tahta dari anak saudara orang tua
+       if (current->node_parrent != NULL && current->node_parrent->node_nb != NULL) { 
+            if(current->node_parrent->node_nb != current && current->node_parrent->node_nb->node_fs != NULL){
+                address temp = current->node_parrent->node_nb;
+                successorPrediction(temp, temp->info.nama);
+                return;
+            }
+        }
+
+        // Jika tidak ada sepupu, perlu untuk memeriksa di atas
+        if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL) {
+            address temp = current->node_parrent;
+            while(temp != NULL && temp->info.alive != true) {
+                temp = temp->node_parrent;
+            } 
+            if(temp != NULL){
+                printf("Predicted heir: %s\n", temp->info.nama);
+                return; 
+            }
+        }
+            // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
+            printf("No predicted heir found for %s.\n", name);
+            return;
+    }
+}

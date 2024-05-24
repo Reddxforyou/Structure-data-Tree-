@@ -171,5 +171,22 @@ void trav_pre_order(address root);
 // F.S. : kedalaman sudah di ketahui
 int Depth(telm_familly *node);
 
+// Fungsi untuk memprediksi pewaris takhta selanjutnya dari suatu node
+// author: Alya
+// I.S : nama pewaris takhta belum diketahui
+// F.S : nama pewaris takhta telah diketahui
+void successorPrediction(address root, infotype name);
+
+// Function untuk menghitung anggota keluarga yang masih hidup
+// author: Alya Naila Putri Ashadilla
+// I.S. : anggota keluarga yang masih hidup belum diketahui 
+// F.S. : anggota keluarga yang masih hidup sudah diketahui
+int countLivingFamilyMembers(address node);
+
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int countGenerations(address root, infotype name);
 
 #endif
