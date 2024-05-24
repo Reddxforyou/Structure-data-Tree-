@@ -53,7 +53,6 @@ dataInfo ket_available(infotype nama[MAX_NAME_LENGTH], int age, char gender)
     if (gender != 'L' && gender != 'P')
     {
         gender = Unknown_gender;
-        printf("your gender is not available\n");
     }
 
     strcpy(person.nama, nama);
@@ -491,4 +490,34 @@ void save_Tree_To_File(const char *filename, telm_root *familyTree)
     serialize_Node(file, familyTree->root, true);
 
     fclose(file);
+}
+
+
+// prosedur fitur untuk menambah anggota kerajaan
+// author : Ais Laksana & Daffa Muzhafar
+// I.S : node belum di tambah
+// F.S : node sudah di tambah
+void add_member(address root) {
+    char name_parent[MAX_NAME_LENGTH];
+    printf("Masukkan nama orang tua: ");
+    scanf("%s", name_parent);
+    address parent = search_handler(root, name_parent);
+    if (parent == NULL) {
+        printf("Orang tua tidak ditemukan\n");
+        return;
+    }
+    point_birth_input(parent);
+}
+
+
+// prosedur untuk dummy data
+void make_tree(telm_root *familyTree) {
+    familyTree->root = alok_available_pers("Root", 50, 'L');
+    point_marriage_unknown(familyTree->root);
+    point_birth_available(familyTree->root, "Anak1", 10, 'L');
+    point_birth_available(familyTree->root, "Anak2", 5, 'P');
+    point_birth_available(familyTree->root->node_fs, "Anak1.1", 30, 'L');
+    point_birth_available(familyTree->root->node_fs, "Anak1.2", 20, 'L');
+    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.1", 10, 'L');
+    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.2", 9, 'L');
 }
