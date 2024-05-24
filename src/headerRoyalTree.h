@@ -8,16 +8,19 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "BOOLEAN.H"
-#define Unknown_name "KELUARGA KERAJAAN"
+
+#define Unknown_name "SESEORANG"
 #define Unknown_gender ' '
+#define MAX_NAME_LENGTH 100
+#define MAX_LINE_LENGTH 256
 #define Root(P) P.root
 typedef struct telm_familly *address;
-typedef char *infotype;
+typedef char infotype;
 
 // data dari informasi person
 typedef struct dataInfo
 {
-    char nama[100];
+    char nama[MAX_NAME_LENGTH];
     int age;
     char gender;
     boolean alive;
@@ -63,7 +66,7 @@ dataInfo ket_unknown();
 // author : Ais Laksana
 // I.S : (dataInfo) belum ada
 // F.S : fungsi mereturn (dataInfo) berdasar parameter
-dataInfo ket_available(infotype nama, int age, char gender);
+dataInfo ket_available(infotype nama[MAX_NAME_LENGTH], int age, char gender);
 
 // Fungsi meng input data info yang diinput user
 // author : Ais Laksana
@@ -87,7 +90,7 @@ address alok_unknown_pers();
 // author : Ais Laksana
 // I.S : node belum di alokasi
 // F.S : fungsi mereturn node sudah di alokasi berdasar input parameter
-address alok_available_pers(infotype name, int age, char gender);
+address alok_available_pers(infotype name[MAX_NAME_LENGTH], int age, char gender);
 
 // Fungsi alokasi node dengan input user
 // author : Ais Laksana
@@ -114,7 +117,7 @@ void point_birth_unknown(telm_familly *X);
 // author : Ais Laksana
 // I.S : (X->node_fs) atau (X->node_fs->node_nb) pada suatu node masih NULL
 // F.S : (X->node_fs) atau (X->node_fs->node_nb) menunjuk pada node dengan (dataInfo) sesuai dengan parameter
-void point_birth_available(telm_familly *X, infotype nama, int age, char gender);
+void point_birth_available(telm_familly *X, infotype nama[MAX_NAME_LENGTH], int age, char gender);
 
 // Prosedur memberikan suatu node dengan anak yang diinput user
 // author : Ais Laksana
@@ -151,7 +154,7 @@ void point_kill(telm_familly *X);
 // author : Daffa Muzhafar & Ais Laksan
 // I.S : node belum di cari
 // F.S : node yang dicari ditemukan dan di return fungsi
-address search(address node, infotype name);
+address search(address node, infotype name[MAX_NAME_LENGTH]);
 
 // Prosedur untuk mencetak pohon secara rekursif dengan pre order
 // author : Daffa Muzhafar & Ais Laksana
@@ -164,6 +167,19 @@ void printTree(address root, int level);
 // I.S. : Tree belum 
 // F.S. : Tree dicetak secara pre-order
 void trav_pre_order(address root);
+
+// prosedur untuk menulis ulang data pada format string dalam file
+// author : Ais Laksana
+// I.S : file belum di tulis
+// F.S : file sudah di tulis
+void serialize_Node(FILE *file, address node, boolean isRoot);
+
+// Prosedur untuk menghandle serialize node
+// author : Ais Laksana
+// I.S : file belum disimpan
+// F.S : file sudah disimpan
+void save_Tree_To_File(const char *filename, telm_root *familyTree);
+
 
 
 #endif

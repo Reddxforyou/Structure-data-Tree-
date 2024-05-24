@@ -1,0 +1,80 @@
+# Root
+name: ROOT
+age: 50
+gender: L
+alive: true
+mate: SESEORANG
+first_son: ANAK1
+next_sibling: null
+parent: null
+
+# Mate
+name: SESEORANG
+age: 0
+gender:  
+alive: true
+mate: ROOT
+first_son: ANAK1
+next_sibling: null
+parent: null
+
+# Person
+name: ANAK1
+age: 10
+gender: L
+alive: true
+mate: null
+first_son: ANAK1FS
+next_sibling: ANAK2
+parent: ROOT
+
+# Person
+name: ANAK1FS
+age: 3
+gender: L
+alive: true
+mate: null
+first_son: ANAK1.2.1
+next_sibling: ANAK1.2
+parent: ANAK1
+
+# Person
+name: ANAK1.2.1
+age: 10
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: ANAK1.2.2
+parent: ANAK1FS
+
+# Person
+name: ANAK1.2.2
+age: 9
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: ANAK1FS
+
+# Person
+name: ANAK1.2
+age: 2
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: ANAK1
+
+# Person
+name: ANAK2
+age: 5
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: ROOT
+

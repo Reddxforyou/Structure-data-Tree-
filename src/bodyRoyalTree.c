@@ -46,7 +46,7 @@ dataInfo ket_unknown()
 // author : Ais Laksana
 // I.S : (dataInfo) belum ada
 // F.S : fungsi mereturn (dataInfo) berdasar parameter
-dataInfo ket_available(infotype nama, int age, char gender)
+dataInfo ket_available(infotype nama[MAX_NAME_LENGTH], int age, char gender)
 {
     dataInfo person;
     gender = toupper(gender);
@@ -134,7 +134,7 @@ address alok_unknown_pers()
 // author : Ais Laksana
 // I.S : node belum di alokasi
 // F.S : fungsi mereturn node sudah di alokasi berdasar input parameter
-address alok_available_pers(infotype name, int age, char gender)
+address alok_available_pers(infotype name[MAX_NAME_LENGTH], int age, char gender)
 {
     dataInfo person = ket_available(name, age, gender);
     return alok_pointer(person);
@@ -156,17 +156,18 @@ address alok_input_pers()
 // F.S : dataInfo sudah di print
 void print_datainfo(dataInfo X)
 {
-    infotype status;
+    infotype status[MAX_NAME_LENGTH];
     printf("Nama : %s\n", X.nama);
     printf("Age : %d\n", X.age);
     printf("Gender : %c\n", X.gender);
     if (X.alive)
     {
-        status = "Hidup";
+        strcpy(status, "Hidup");
+        
     }
     else
     {
-        status = "Meninggal";
+        strcpy(status, "Mati");
     }
     printf("Status hidup : %s\n", status);
 }
@@ -195,7 +196,7 @@ void point_birth_unknown(telm_familly *X)
         }
         temp->node_nb = node;
     }
-    
+    node->node_parrent = X;
 
 }
 
@@ -203,7 +204,7 @@ void point_birth_unknown(telm_familly *X)
 // author : Ais Laksana
 // I.S : (X->node_fs) atau (X->node_fs->node_nb) pada suatu node masih NULL
 // F.S : (X->node_fs) atau (X->node_fs->node_nb) menunjuk pada node dengan (dataInfo) sesuai dengan parameter
-void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
+void point_birth_available(telm_familly *X, infotype nama[MAX_NAME_LENGTH], int age, char gender)
 {
     address node = alok_available_pers(nama, age, gender);
     if (X->node_fs == NULL)
@@ -222,6 +223,7 @@ void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
         }
         temp->node_nb = node;
     }
+    node->node_parrent = X;
 }
 
 // Prosedur memberikan suatu node dengan anak yang diinput user
@@ -353,17 +355,16 @@ void point_kill(telm_familly *X)
 // author : Daffa Muzhafar & Ais Laksan
 // I.S : node belum di cari
 // F.S : node yang dicari ditemukan dan di return fungsi
-address search(address node, infotype name) {
+address search(address node, infotype name[MAX_NAME_LENGTH]) {
     if (node == NULL) {
         return NULL;
     }
+    
     if (strcmp(node->info.nama, name) == 0) {
-        printf("Found");
         return node;
     }
     if (node->node_mate != NULL) {
         if (strcmp(node->node_mate->info.nama, name) == 0) {
-            printf("Found");
             return node->node_mate;
         }
     }
@@ -375,8 +376,22 @@ address search(address node, infotype name) {
     return search(node->node_nb, name);
 }
 
+address search_handler(address node, infotype name[MAX_NAME_LENGTH]) {
+    char temp_name[MAX_NAME_LENGTH];
+    strcpy(temp_name, name);
+    string_to_uppercase(temp_name);
+    address result = search(node, temp_name);
+    if (result == NULL) {
+        printf("Not found\n");
+    }else{
+        printf("Found\n");
+    }
+    return result;
+}
+
+
 // Prosedur untuk mencetak pohon secara rekursif dengan pre order
-// author : Daffa Muzhafar & Ais Laksana
+// author : Daffa Muzhafar
 // I.S : Tree belum tercetak
 // F.S : Tree tercetak dengan garis silsilah tiap generasi
 void printTree(address root, int level) {
@@ -410,4 +425,70 @@ void trav_pre_order(address root){
     printf("\n");
     trav_pre_order(root->node_fs);
     trav_pre_order(root->node_nb);
+}
+
+
+
+
+// prosedur untuk menulis ulang data pada format string dalam file
+// author : Ais Laksana
+// I.S : file belum di tulis
+// F.S : file sudah di tulis
+void serialize_Node(FILE *file, address node, boolean isRoot)
+{
+    if (node == NULL)
+        return;
+
+
+    if (isRoot) {
+        fprintf(file, "# Root\n");
+    } else {
+        fprintf(file, "# Person\n");
+    }
+
+    fprintf(file, "name: %s\n", node->info.nama);
+    fprintf(file, "age: %d\n", node->info.age);
+    fprintf(file, "gender: %c\n", node->info.gender);
+    fprintf(file, "alive: %s\n", node->info.alive ? "true" : "false");
+    fprintf(file, "mate: %s\n", node->node_mate ? node->node_mate->info.nama : "null");
+    fprintf(file, "first_son: %s\n", node->node_fs ? node->node_fs->info.nama : "null");
+    fprintf(file, "next_sibling: %s\n", node->node_nb ? node->node_nb->info.nama : "null");
+    fprintf(file, "parent: %s\n", node->node_parrent ? node->node_parrent->info.nama : "null");
+    fprintf(file, "\n");
+
+    
+    if (node->node_mate)
+    {
+        fprintf(file, "# Mate\n");
+        fprintf(file, "name: %s\n", node->node_mate->info.nama);
+        fprintf(file, "age: %d\n", node->node_mate->info.age);
+        fprintf(file, "gender: %c\n", node->node_mate->info.gender);
+        fprintf(file, "alive: %s\n", node->node_mate->info.alive ? "true" : "false");
+        fprintf(file, "mate: %s\n", node->node_mate->node_mate ? node->node_mate->node_mate->info.nama : "null");
+        fprintf(file, "first_son: %s\n", node->node_mate->node_fs ? node->node_mate->node_fs->info.nama : "null");
+        fprintf(file, "next_sibling: %s\n", node->node_mate->node_nb ? node->node_mate->node_nb->info.nama : "null");
+        fprintf(file, "parent: %s\n", node->node_mate->node_parrent ? node->node_mate->node_parrent->info.nama : "null");
+        fprintf(file, "\n");
+    }
+
+    serialize_Node(file, node->node_fs, false); 
+    serialize_Node(file, node->node_nb, false); 
+}
+
+// Prosedur untuk menghandle serialize node
+// author : Ais Laksana
+// I.S : file belum disimpan
+// F.S : file sudah disimpan
+void save_Tree_To_File(const char *filename, telm_root *familyTree)
+{
+    FILE *file = fopen(filename, "w");
+    if (file == NULL)
+    {
+        perror("Unable to open file for writing");
+        return;
+    }
+
+    serialize_Node(file, familyTree->root, true);
+
+    fclose(file);
 }
