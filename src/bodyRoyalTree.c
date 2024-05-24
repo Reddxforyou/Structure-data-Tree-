@@ -212,6 +212,7 @@ void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
         if(X->node_mate != NULL){
             X->node_mate->node_fs = node;
         }
+        X->node_fs->node_parrent = X;
     }
     else
     {
@@ -221,8 +222,9 @@ void point_birth_available(telm_familly *X, infotype nama, int age, char gender)
             temp = temp->node_nb;
         }
         temp->node_nb = node;
+         temp->node_parrent = X->node_parrent;
     }
-    X->node_fs->node_parrent = X;
+   
 }
 
 // Prosedur memberikan suatu node dengan anak yang diinput user
@@ -470,8 +472,6 @@ int countGenerations(address root, infotype name) {
     }
 }
 
-
-
 // Function untuk menghitung anggota keluarga yang masih hidup
 // author: Alya Naila Putri Ashadilla
 // I.S. : anggota keluarga yang masih hidup belum diketahui 
@@ -493,7 +493,7 @@ int countLivingFamilyMembers(address node) {
 }
 
 // Fungsi untuk memprediksi pewaris takhta selanjutnya dari suatu node
-// author: Alya
+// author: Alya Naila Putri Ashadilla
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
 void successorPrediction(address root, infotype name) {
@@ -563,3 +563,74 @@ void successorPrediction(address root, infotype name) {
             return;
     }
 }
+
+// Fungsi untuk elakukan dealokasi / pengembalian address P ke system
+// author: Alya Naila Putri Ashadilla
+// referensi: modul pa Ade 
+// IS : P terdefinisi 
+// FS : P dikembalikan ke sistem 
+void deAlokasi (address P){
+	 if (P != NULL)
+	 {
+        P = NULL;
+	    free (P);
+	 }
+}
+
+// Fungsi untuk menghapus salah satu anggota keluarga kerajaan berserta keturunannya
+// author: Alya Naila Putri Ashadilla
+// I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
+// F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
+void deleteNode(address root, infotype name){
+    address temp;
+
+    if(root == NULL) { //mengecek apakah tree kosong
+        printf("Silsilah keluarga kerajaan kosong");
+        return;
+    } 
+
+    address node = search(root, name);
+    if(node == NULL) { //jika nama tidak ada dalam silsilah keluarga kerajaan
+       printf("Person with name '%s' not found.\n", name);  
+       return;
+    } 
+    
+    //delete pasangan jika ia memiliki pasangan
+    if(node->node_mate != NULL){
+        temp = node->node_mate;
+        node->node_mate = NULL;
+        temp->node_mate = NULL;
+        temp = NULL;
+    }
+    
+    // periksa apakah dia punya parrent
+    if(node->node_parrent != NULL || node->node_parrent == root){
+        // periksa apakah dia adalah first son
+        if(node->node_parrent->node_fs == node){
+            node->node_parrent->node_fs = node->node_nb;
+        } else { //periksa jika dia bukan first son
+            temp = node->node_parrent->node_fs;
+            while(temp->node_nb != node){
+                 temp = temp->node_nb;
+            }
+            temp->node_nb = node->node_nb;
+        }
+        node->node_parrent = NULL;
+        node->node_nb = NULL;
+    }
+
+    //delete keturunan yang dipunya  
+    if(node->node_fs != NULL){ 
+        temp = node-> node_fs;
+        
+        // mengecek apakah anak memiliki saudara
+        while(temp != NULL){
+            address nextSibling = temp->node_nb; // Simpan saudara berikutnya sebelum menghapus
+            deleteNode(root, temp->info.nama); 
+            temp = nextSibling; //ke saudara berikutnya
+        }
+    }
+    
+    // dealokasi node 
+    deAlokasi(node);
+}    
