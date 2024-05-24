@@ -463,10 +463,6 @@ void gameStart()
     mainMenu();
 }
 
-// Fungsi yang menampilkan tampilan Awal
-// author : Daffa Muzhafar 
-// I.S : Tampilan awal
-// F.S : Tampilan main Menu
 void mainMenu()
 {
     do
@@ -480,16 +476,15 @@ void mainMenu()
         printf("\n\t\t\t\t\t\t|                                               |");
         printf("\n\t\t\t\t\t\t|                                               |");
         printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                1. Testing                     |");
-        printf("\n\t\t\t\t\t\t|                2. Aturan Kerajaan             |");
-        printf("\n\t\t\t\t\t\t|                3. Tambah Anggota Kerajaan     |");
-        printf("\n\t\t\t\t\t\t|                4. Tambah Pasangan             |");
-        printf("\n\t\t\t\t\t\t|                5. Turunkan Raja               |");
-        printf("\n\t\t\t\t\t\t|                6. Hapus Anggota Kerajaan      |");
-        printf("\n\t\t\t\t\t\t|                7. Tampilkan Informasi Anggota |");
-        printf("\n\t\t\t\t\t\t|                8. Tampilkan Penerus Tahta     |");
-        printf("\n\t\t\t\t\t\t|                9. Tampilkan Jumlah Anggota    |");
-        printf("\n\t\t\t\t\t\t|               10. Tampilkan Anggota Hidup     |");								        
+        printf("\n\t\t\t\t\t\t|                1. Aturan Kerajaan             |");
+        printf("\n\t\t\t\t\t\t|                2. Tambah Anggota Kerajaan     |");
+        printf("\n\t\t\t\t\t\t|                3. Tambah Pasangan             |");
+        printf("\n\t\t\t\t\t\t|                4. Turunkan Raja               |");
+        printf("\n\t\t\t\t\t\t|                5. Hapus Anggota Kerajaan      |");
+        printf("\n\t\t\t\t\t\t|                6. Tampilkan Informasi Anggota |");
+        printf("\n\t\t\t\t\t\t|                7. Tampilkan Penerus Tahta     |");
+        printf("\n\t\t\t\t\t\t|                8. Tampilkan Jumlah Anggota    |");
+		printf("\n\t\t\t\t\t\t|                9. Tampilkan Anggota Hidup     |");								        
         printf("\n\t\t\t\t\t\t|                0. Keluar                      |");
         printf("\n\t\t\t\t\t\t|                                               |");
         printf("\n\t\t\t\t\t\t|                                               |");
@@ -504,10 +499,10 @@ void mainMenu()
         switch (choice)
         {
         case 1:
-        	Start();
+        	Aturan();
             break;
         case 2:
-        	Aturan();
+        	addMember();
             break;
         case 3:
         	//Aturan();
@@ -529,10 +524,7 @@ void mainMenu()
             break;
         case 9:
         	//Aturan();
-            break;
-        case 10:
-        	//Aturan();
-            break;        
+            break;       
         case 0:
             printf("\t\t\t\t\t\tTerima kasih!\n");
             break;
@@ -545,25 +537,6 @@ void mainMenu()
     } while (choice != 0);
 }
 
-void Start()
-{
-	telm_root test;
-    init_Root(&test);
-    Root(test) = alok_available_pers("Charles1", 60, 'L');
-    point_marriage_input(Root(test));
-    point_birth_input(Root(test));
-    point_birth_input(Root(test));
-    point_birth_input(Root(test));
-
-    // Cetak struktur pohon
-    printf("Silsilah Anggota Kerajaan:\n");
-    printTree(Root(test), 0);
-}
-
-// Fungsi yang menampilkan tampilan Awal
-// author : Daffa Muzhafar 
-// I.S : Tampilan main Menu
-// F.S : Tampilan Aturan Kerajaan
 void Aturan(){
 printf("\n\t\t__________________________________________________________________________________________________________________________________");
 printf("\n\t\t|I. Aturan penurunan tahta                                                                                                       |");
@@ -600,5 +573,88 @@ printf("\n\t\t|  vi. Anggota kerajaan yang dihapus beserta semua keturunannya, y
 printf("\n\t\t|      akan dihapus secara berurutan.                                                                                            |");
 printf("\n\t\t|________________________________________________________________________________________________________________________________|");
 printf("\n");
+}
+
+boolean isEmpty(telm_root L)
+{
+    return (L.root == NULL);
+}
+
+void deleteNode(telm_familly **root, char *name) {
+    if (*root == NULL) {
+        return;
+    }
+
+    address temp = *root, prev = NULL;
+    while (temp != NULL && strcmp(temp->info.nama, name) != 0) {
+        prev = temp;
+        temp = temp->node_nb; 
+    }
+
+    if (temp == NULL) {
+        printf("Node dengan nama %s tidak ditemukan.\n", name);
+        return;
+    }
+    
+    if (temp->node_fs != NULL) {
+        printf("Node dengan nama %s memiliki anak, tidak bisa dihapus.\n", name);
+        return;
+    }
+
+    if (prev == NULL) { 
+        *root = temp->node_nb;
+    } else {
+        prev->node_nb = temp->node_nb;
+    }
+
+    free(temp);
+    printf("Node dengan nama %s telah dihapus.\n", name);
+}
+
+
+void Dealloc(address *node)
+{
+    if (*node == NULL)
+        return;
+
+    Dealloc(&((*node)->node_fs));
+    Dealloc(&((*node)->node_nb));
+
+    free(*node);
+    *node = NULL;
+}
+
+
+int countLastDescendants(address node) {
+    if (node == NULL) {
+        return 0;
+    }
+
+    if (node->node_fs == NULL) {
+        return 1;
+    }
+
+    int count = 0;
+    address temp = node->node_fs;
+    while (temp != NULL) {
+        count += countLastDescendants(temp);
+        temp = temp->node_nb; 
+    }
+	return count;
+}
+
+void addMember()
+{
+	telm_root test;
+    init_Root(&test);
+    Root(test) = alok_available_pers("Charles1", 60, 'L');
+    point_marriage_input(Root(test));
+    point_birth_input(Root(test));
+    point_birth_input(Root(test));
+    point_birth_input(Root(test));
+
+    // Cetak struktur pohon
+    printf("Silsilah Anggota Kerajaan:\n");
+    printTree(Root(test), 0);
 }
 
