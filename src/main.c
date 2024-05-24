@@ -162,11 +162,87 @@
 // }
 
 
+
+
 int main()
 {
-    // masih testing module
+    system("Color 0B");
     telm_root test;
     make_tree(&test);
+    start();
+    int choice;
+    do{
+        system("cls");
+        printf("\n\n\n\n\n\n\n\n");
+        printf("\n\t\t\t\t\t\t_________________.===========.___________________");
+        printf("\n\t\t\t\t\t\t|                |=MAIN MENU=|                  |");
+        printf("\n\t\t\t\t\t\t|                '==========='                  |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                1. Aturan Kerajaan             |");
+        printf("\n\t\t\t\t\t\t|                2. Tambah Anggota Kerajaan     |");
+        printf("\n\t\t\t\t\t\t|                3. Tambah Pasangan             |");
+        printf("\n\t\t\t\t\t\t|                4. Turunkan Raja[x]            |");
+        printf("\n\t\t\t\t\t\t|                5. Bunuh Anggota Kerajaan      |");
+        printf("\n\t\t\t\t\t\t|                6. Tampilkan Informasi Anggota |");
+        printf("\n\t\t\t\t\t\t|                7. Tampilkan Penerus Tahta[bug]|");
+        printf("\n\t\t\t\t\t\t|                8. Tampilkan Jumlah Anggota[x] |");
+        printf("\n\t\t\t\t\t\t|                9. Tampilkan Anggota Hidup[bug]|");								        
+        printf("\n\t\t\t\t\t\t|                0. Keluar                      |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|_______________________________________________|");
+        printf("\n\t\t\t\t\t\t\t\tPilih menu (0/1/2/3): ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            Aturan();
+            break;
+        case 2:
+            tambah_anak(Root(test));
+            break;
+        case 3:
+            nikahkan(Root(test));
+            break;
+        case 4:
+            //Aturan();
+            break;
+        case 5:
+            membunuh(Root(test));
+            break;
+        case 6:
+            tampilkan_informasi(Root(test));
+            break;
+        case 7:
+            // bug
+            penerus(Root(test));
+            break;
+        case 8:
+            //Aturan();
+            break;
+        case 9:
+            // bug
+            printf("Anggota keluarga kerajaan yang masih hidup berjumlah : %d", countLivingFamilyMembers(Root(test)));
+            break;       
+        case 0:
+            printf("\t\t\t\t\t\tTerima kasih!\n");
+            break;
+        default:
+            printf("\t\t\t\t\tPilihan tidak valid. Silakan pilih lagi.\n");
+        }
+        printf("\t\t\t\t\t\tTekan Enter untuk melanjutkan :"); // Teks "tekan enter untuk melanjutkan"
+        getchar();                                             // Mengambil karakter dari input (enter) untuk melanjutkan
+        getchar();                                             // Untuk menunggu sampai pengguna menekan Enter
+    }while(choice != 0);
+    // masih testing module
     // init_Root(&test);
     // // telm_root *loadedFamilyTree;
     // // init_Root(loadedFamilyTree);
@@ -181,10 +257,10 @@ int main()
     // point_birth_available(Root(test)->node_fs->node_fs, "Anak1.1.2", 9, 'L');
     // save_Tree_To_File("familyTree.txt", &test);
     int i;
-    for ( i = 0; i < 3; i++)
+    for ( i = 0; i < 2; i++)
     {
         printTree(Root(test), 0);
-        add_member(Root(test));
+        membunuh(Root(test));
         printTree(Root(test), 0);
     }
     

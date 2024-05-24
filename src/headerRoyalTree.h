@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <conio.h>
 #include <ctype.h>
 #include "BOOLEAN.H"
 
@@ -180,7 +181,16 @@ void serialize_Node(FILE *file, address node, boolean isRoot);
 // F.S : file sudah disimpan
 void save_Tree_To_File(const char *filename, telm_root *familyTree);
 
-void add_member(address root);
+void tambah_anggota(address root);
+
+// Procedure to perform marriage
+void nikahkan(address root);
+
+// Procedure to display information about a person
+void tampilkan_informasi(address root);
+
+// Procedure to perform killing
+void membunuh(address root);
 
 void make_tree(telm_root *familyTree);
 
