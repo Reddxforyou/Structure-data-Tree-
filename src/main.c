@@ -161,29 +161,6 @@
 //     return familyTree;
 // }
 
-void add_member(address root) {
-    char name_parent[MAX_NAME_LENGTH];
-    printf("Masukkan nama orang tua: ");
-    scanf("%s", name_parent);
-    address parent = search_handler(root, name_parent);
-    if (parent == NULL) {
-        printf("Orang tua tidak ditemukan\n");
-        return;
-    }
-    point_birth_input(parent);
-}
-
-void make_tree(telm_root *familyTree) {
-    familyTree->root = alok_available_pers("Root", 50, 'L');
-    point_marriage_unknown(familyTree->root);
-    point_birth_available(familyTree->root, "Anak1", 10, 'L');
-    point_birth_available(familyTree->root, "Anak2", 5, 'P');
-    point_birth_available(familyTree->root->node_fs, "Anak1.1", 30, 'L');
-    point_birth_available(familyTree->root->node_fs, "Anak1.2", 20, 'L');
-    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.1", 10, 'L');
-    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.2", 9, 'L');
-}
-
 
 int main()
 {

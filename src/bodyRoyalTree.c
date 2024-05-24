@@ -500,7 +500,8 @@ void save_Tree_To_File(const char *filename, telm_root *familyTree)
 void add_member(address root) {
     char name_parent[MAX_NAME_LENGTH];
     printf("Masukkan nama orang tua: ");
-    scanf("%s", name_parent);
+    scanf(" %[^\n]", name_parent);
+    getchar();
     address parent = search_handler(root, name_parent);
     if (parent == NULL) {
         printf("Orang tua tidak ditemukan\n");
