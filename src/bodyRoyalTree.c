@@ -463,6 +463,10 @@ void gameStart()
     mainMenu();
 }
 
+// Fungsi yang menampilkan tampilan Awal
+// author : Daffa Muzhafar 
+// I.S : Tampilan awal
+// F.S : Tampilan main Menu
 void mainMenu()
 {
     do
@@ -485,7 +489,7 @@ void mainMenu()
         printf("\n\t\t\t\t\t\t|                7. Tampilkan Informasi Anggota |");
         printf("\n\t\t\t\t\t\t|                8. Tampilkan Penerus Tahta     |");
         printf("\n\t\t\t\t\t\t|                9. Tampilkan Jumlah Anggota    |");
-	printf("\n\t\t\t\t\t\t|               10. Tampilkan Anggota Hidup     |");
+        printf("\n\t\t\t\t\t\t|               10. Tampilkan Anggota Hidup     |");								        
         printf("\n\t\t\t\t\t\t|                0. Keluar                      |");
         printf("\n\t\t\t\t\t\t|                                               |");
         printf("\n\t\t\t\t\t\t|                                               |");
@@ -556,6 +560,45 @@ void Start()
     printTree(Root(test), 0);
 }
 
+// Fungsi yang menampilkan tampilan Awal
+// author : Daffa Muzhafar 
+// I.S : Tampilan main Menu
+// F.S : Tampilan Aturan Kerajaan
 void Aturan(){
+printf("\n\t\t__________________________________________________________________________________________________________________________________");
+printf("\n\t\t|I. Aturan penurunan tahta                                                                                                       |");
+printf("\n\t\t|   i. Pewaris tahta kerajaan adalah anak sulung (first son) dari keturunan langsung raja.                                       |");
+printf("\n\t\t|  ii. Aturan primogenetur absolut diterapkan, yang berarti bahwa putra dan putri yang berstatus sebagai anak sulung (first son) |");
+printf("\n\t\t|      sama-sama memenuhi syarat untuk menjadi pewaris tahta. Ini berarti pewaris tahta tidak dibatasi oleh gender.              |");
+printf("\n\t\t| iii. Dalam kondisi generasi terakhir, jika pewaris tahta (first son) meninggal maka tahta akan diwariskan ke anak selanjutnya  |");
+printf("\n\t\t|      (next brother) sebagai pewaris tahta urutan pertama.                                                                      |");
+printf("\n\t\t|  iv. Jika pewaris tahta tidak memiliki keturunan dan saudara kandungnya juga sudah meninggal, maka tahta dapat diwariskan      |");
+printf("\n\t\t|      kepada kerabat dekat terdekat yang masih hidup, seperti sepupu atau paman/ibunya.                                         |");
+printf("\n\t\t|                                                                                                                                |");
+printf("\n\t\t|II. Aturan penambahan anggota keluarga kerajaan                                                                                 |");
+printf("\n\t\t|   i. Raja / ratu pertama harus berumur antara 50 - 79                                                                          |");
+printf("\n\t\t|  ii. Untuk memiliki anak maka harus memiliki pasangan terlebih dahulu                                                          |");
+printf("\n\t\t| iii. Anak harus berumur minimal 19 tahun lebih muda dari orang tua                                                             |");
+printf("\n\t\t|  iv. Nama anak tidak boleh sama dengan anggota keluarga lain                                                                   |");
+printf("\n\t\t|                                                                                                                                |");
+printf("\n\t\t|III. Aturan penambahan pasangan anggota keluarga kerajaan                                                                       |");
+printf("\n\t\t|   i. Umur minimal untuk memiliki pasangan adalah 18 tahun                                                                      |");
+printf("\n\t\t|  ii. Umur minimal pasangan adalah 18 tahun                                                                                     |");
+printf("\n\t\t| iii. Pasangan harus berlawanan jenis                                                                                           |");
+printf("\n\t\t|  iv. Jumlah maksimal pasangan adalah 1                                                                                         |");
+printf("\n\t\t|   v. Nama pasangan tidak boleh sama dengan anggota keluarga lain                                                               |");
+printf("\n\t\t|                                                                                                                                |");
+printf("\n\t\t|IV. Aturan penghapusan anggota keluarga kerajaan                                                                                |");
+printf("\n\t\t|   i. Jika pohon keluarga kosong, tidak ada anggota keluarga yang dapat dihapus                                                 |");
+printf("\n\t\t|  ii. Jika anggota keluarga yang dihapus adalah daun (leaf) tanpa keturunan, maka dia akan dihapus langsung                     |");
+printf("\n\t\t| iii. Jika anggota keluarga yang dihapus memiliki saudara berikutnya (next brother), maka dia akan digantikan                   |");
+printf("\n\t\t|      oleh saudaranya tersebut.                                                                                                 |");
+printf("\n\t\t|  iv. Jika anggota keluarga yang dihapus adalah putra pertama (first son), maka putra pertama akan digantikan                   |");
+printf("\n\t\t|      oleh saudara berikutnya.                                                                                                  |");
+printf("\n\t\t|   v. Jika anggota keluarga yang dihapus adalah raja, maka tahtanya akan dipindahkan ke saudaranya.                             |");
+printf("\n\t\t|  vi. Anggota kerajaan yang dihapus beserta semua keturunannya, yaitu putra pertama dan saudara-saudaranya,                     |");
+printf("\n\t\t|      akan dihapus secara berurutan.                                                                                            |");
+printf("\n\t\t|________________________________________________________________________________________________________________________________|");
+printf("\n");
 }
 
