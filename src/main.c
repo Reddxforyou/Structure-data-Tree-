@@ -301,6 +301,74 @@ void search(infotype name){
     
 }
 
+// Check if the root is empty
+boolean isEmpty(telm_root L) {
+    return L.root == NULL;
+}
+
+void deleteNode(telm_familly **root, char *name) {
+    if (*root == NULL) {
+        return;
+    }
+
+    // Mencari node dengan nama yang diberikan
+    address temp = *root, prev = NULL;
+    while (temp != NULL && strcmp(temp->info.nama, name) != 0) {
+        prev = temp;
+        temp = temp->node_nb; // asumsi kita mencari di sibling nodes
+    }
+
+    // Jika node tidak ditemukan
+    if (temp == NULL) {
+        printf("Node dengan nama %s tidak ditemukan.\n", name);
+        return;
+    }
+
+    // Cek jika node memiliki anak
+    if (temp->node_fs != NULL) {
+        printf("Node dengan nama %s memiliki anak, tidak bisa dihapus.\n", name);
+        return;
+    }
+
+    // Menghapus node
+    if (prev == NULL) { // Node adalah root atau node pertama di sibling
+        *root = temp->node_nb;
+    } else {
+        prev->node_nb = temp->node_nb;
+    }
+
+    free(temp);
+    printf("Node dengan nama %s telah dihapus.\n", name);
+}
+
+// Deallocate all nodes in the family tree
+void Dealloc(telm_familly *root) {
+    if (root == NULL) {
+        return;
+    }
+
+    Dealloc(root->node_fs); // Deallocate children nodes
+    Dealloc(root->node_nb); // Deallocate sibling nodes
+
+    free(root); // Deallocate current node
+}
+
+// Count the number of last descendants (nodes without children) starting from a given node
+int countLastDescendants(telm_familly *node) {
+    if (node == NULL) {
+        return 0;
+    }
+
+    int count = 0;
+    if (node->node_fs == NULL) {
+        count++;
+    }
+
+    count += countLastDescendants(node->node_nb); // Check siblings for last descendants
+
+    return count;
+}
+
 int main()
 {
     // masih testing module
