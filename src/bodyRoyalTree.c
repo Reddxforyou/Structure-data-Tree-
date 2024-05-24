@@ -485,7 +485,7 @@ void mainMenu()
         printf("\n\t\t\t\t\t\t|                7. Tampilkan Informasi Anggota |");
         printf("\n\t\t\t\t\t\t|                8. Tampilkan Penerus Tahta     |");
         printf("\n\t\t\t\t\t\t|                9. Tampilkan Jumlah Anggota    |");
-	printf("\n\t\t\t\t\t\t|               10. Tampilkan Anggota Hidup     |");								        
+	printf("\n\t\t\t\t\t\t|               10. Tampilkan Anggota Hidup     |");
         printf("\n\t\t\t\t\t\t|                0. Keluar                      |");
         printf("\n\t\t\t\t\t\t|                                               |");
         printf("\n\t\t\t\t\t\t|                                               |");
