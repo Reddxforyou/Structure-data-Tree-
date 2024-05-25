@@ -10,11 +10,15 @@ int main()
     // masih testing module
     telm_root test;
     init_Root(&test);
+
+    telm_root testing;
+    init_Root(&testing);
     Root(test) = alok_unknown_pers();
+    Root(testing) = alok_unknown_pers();
     
     // memberikan suatu node anak
     point_birth_available(Root(test), "Anak2", 10, 'L');
-    point_birth_available(Root(test), "Anak15", 5, 'P');
+    // point_birth_available(Root(test), "Anak15", 5, 'P');
     point_birth_available(Root(test), "Anak1", 5, 'P');
     point_birth_available(Root(test)->node_fs, "Anak25", 3, 'L');
     point_birth_available(Root(test)->node_fs, "Anak22", 3, 'L');
@@ -22,31 +26,39 @@ int main()
     point_birth_available(Root(test)->node_fs->node_nb->node_fs, "Anak4", 3, 'L');
     point_birth_available(Root(test)->node_fs->node_nb->node_fs->node_fs, "Anak5", 3, 'L');
 
+    //keluarga 2
+    point_birth_available(Root(testing), "Istri", 10, 'L');
+
+
     // print tree secara preorder
     printf("\n");
-    trav_pre_order(Root(test));
+    point_marriage_available(Root(testing)->node_fs, Root(test)->node_fs->node_nb);
+    printTree(Root(test), 0);
+    // trav_pre_order(Root(test));
 
-    //mencari anak5
-    printf("\n");
-    search(Root(test), "ANAK5");
+
+    // //mencari anak5
+    // printf("\n");
+    // search(Root(test), "ANAK5");
 
     //ubah status hidup menjadi false
+    point_kill(Root(test)->node_fs->node_nb); //anak1
     point_kill(Root(test)->node_fs->node_nb->node_fs); //anak3
     point_kill(Root(test)->node_fs->node_nb->node_fs->node_fs);//anak 4
     
-    //melihat siapa penerus selanjutnya
-    printf("\n");
+    // //melihat siapa penerus selanjutnya
+    // printf("\n");
     successorPrediction(Root(test), "ANAK5");
     
-    //menghapus anak 1 dan keturunannya
-    printf("\n");
-    deleteNodewithDescendants(Root(test), "ANAK2");
-    printf("\n");
-    // deAlokasi(Root(test));
-    printTree(Root(test), 0);
+    // //menghapus anak 1 dan keturunannya
+    // printf("\n");
+    // deleteNodewithDescendants(Root(test), "ANAK2");
+    // printf("\n");
+    // // deAlokasi(Root(test));
+    // printTree(Root(test), 0);
 
-    // printtraversal
-    printf("preorder");
-    trav_pre_order(Root(test));
+    // // printtraversal
+    // printf("preorder");
+    // trav_pre_order(Root(test));
     return 0;
 }

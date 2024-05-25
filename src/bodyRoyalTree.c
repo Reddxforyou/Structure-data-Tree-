@@ -396,7 +396,7 @@ void printTree(address root, int level) {
             for (i = 0; i < level; i++) {
                 printf("    |");
             }
-            printf("- %s\n", root->node_mate->info.nama);
+            printf("    X\n      %s\n", root->node_mate->info.nama);
         }
     }
 
@@ -515,11 +515,13 @@ void successorPrediction(address root, infotype name) {
 
     if (current == NULL) {
         printf("Person with name '%s' not found.\n", name); 
+        return;
     }else {
         // Lakukan prediksi berdasarkan aturan penurunan tahta
         // Jika memiliki anak dan masih hidup, pewaris tahta adalah anak pertama yang masih hidup
         if ((current->node_fs != NULL) && (current->node_fs->info.alive == true)) {
             printf("Predicted heir: %s\n", current->node_fs->info.nama);
+            return;
         }
 
         // Jika tidak memiliki anak tapi memiliki saudara, pewaris tahta adalah saudara pertama yang masih hidup
@@ -530,6 +532,7 @@ void successorPrediction(address root, infotype name) {
             }
             if (temp != NULL) {
                 printf("Predicted heir: %s\n", temp->info.nama);
+                return;
             } 
         }
 
@@ -559,6 +562,11 @@ void successorPrediction(address root, infotype name) {
         if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL) {
             address temp = current->node_parrent;
             while(temp != NULL && temp->info.alive != true) {
+                //mencari pewaris takhta berdasarkan pasangannya 
+                if(temp->node_mate != NULL && temp->node_mate->info.alive==true){
+                    printf("Predicted heir: %s\n", temp->node_mate->info.nama);
+                    return;
+                }
                 temp = temp->node_parrent;
             } 
             if(temp != NULL){
@@ -566,9 +574,10 @@ void successorPrediction(address root, infotype name) {
                 return; 
             }
         }
-            // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
-            printf("No predicted heir found for %s.\n", name);
-            return;
+        
+        // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
+        printf("No predicted heir found for %s.\n", name);
+        return;
     }
 }
 

@@ -189,6 +189,9 @@ int countLivingFamilyMembers(address node);
 // F.S. : generasi dari anggota keluarga diketahui
 int countGenerations(address root, infotype name);
 
-
-void Dealloc(telm_familly *root); 
+// Fungsi untuk menghapus salah satu anggota keluarga kerajaan berserta keturunannya
+// author: Alya Naila Putri Ashadilla
+// I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
+// F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
+void deleteNodewithDescendants(address root, infotype name);
 #endif
