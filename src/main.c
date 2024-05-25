@@ -177,28 +177,20 @@ int main()
         printf("\n\t\t\t\t\t\t_________________.===========.___________________");
         printf("\n\t\t\t\t\t\t|                |=MAIN MENU=|                  |");
         printf("\n\t\t\t\t\t\t|                '==========='                  |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                1. Aturan Kerajaan             |");
-        printf("\n\t\t\t\t\t\t|                2. Tambah Anggota Kerajaan     |");
-        printf("\n\t\t\t\t\t\t|                3. Tambah Pasangan             |");
-        printf("\n\t\t\t\t\t\t|                4. Turunkan Raja[x]            |");
-        printf("\n\t\t\t\t\t\t|                5. Bunuh Anggota Kerajaan      |");
-        printf("\n\t\t\t\t\t\t|                6. Tampilkan Informasi Anggota |");
-        printf("\n\t\t\t\t\t\t|                7. Tampilkan Penerus Tahta[bug]|");
-        printf("\n\t\t\t\t\t\t|                8. Tampilkan Jumlah Anggota[x] |");
-        printf("\n\t\t\t\t\t\t|                9. Tampilkan Anggota Hidup[bug]|");								        
-        printf("\n\t\t\t\t\t\t|                0. Keluar                      |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
-        printf("\n\t\t\t\t\t\t|                                               |");
+        printf("\n\t\t\t\t\t\t|        1. Aturan Kerajaan                     |");
+        printf("\n\t\t\t\t\t\t|        2. Tambah Anggota Kerajaan             |");
+        printf("\n\t\t\t\t\t\t|        3. Tambah Pasangan                     |");
+        printf("\n\t\t\t\t\t\t|        4. Turunkan Raja[x]                    |");
+        printf("\n\t\t\t\t\t\t|        5. Bunuh Anggota Kerajaan              |");
+        printf("\n\t\t\t\t\t\t|        6. Tampilkan Informasi Anggota         |");
+        printf("\n\t\t\t\t\t\t|        7. Tampilkan Penerus Tahta[bug]        |");
+        printf("\n\t\t\t\t\t\t|        8. Tampilkan Jumlah Anggota[x]         |");
+        printf("\n\t\t\t\t\t\t|        9. Tampilkan Anggota Hidup[bug]        |");								        
+        printf("\n\t\t\t\t\t\t|        0. Keluar                              |");
         printf("\n\t\t\t\t\t\t|_______________________________________________|");
         printf("\n\t\t\t\t\t\t\t\tPilih menu (0/1/2/3): ");
+        printf("\n");
+        printTree(Root(test), 0);
         scanf("%d", &choice);
 
         switch (choice)
@@ -230,7 +222,7 @@ int main()
             break;
         case 9:
             // bug
-            printf("Anggota keluarga kerajaan yang masih hidup berjumlah : %d", countLivingFamilyMembers(Root(test)));
+            printf("\nAnggota keluarga kerajaan yang masih hidup berjumlah : %d", countLivingFamilyMembers(Root(test)));
             break;       
         case 0:
             printf("\t\t\t\t\t\tTerima kasih!\n");

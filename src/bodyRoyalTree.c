@@ -536,13 +536,8 @@ void tambah_anak(address root)
             printf("\n\tPress any key to continue . . . ");
             getch();
         }
-    } while (parent == NULL && strcmp(name_parent, "\n") != 0);
+    } while (parent == NULL);
 
-    if (parent == NULL)
-    {
-        printf("Orang tua tidak ditemukan\n");
-        return;
-    }
     printf("Data diri calon anak : \n");
     point_birth_input(parent);
     system("cls");
@@ -582,7 +577,13 @@ void nikahkan(address root)
         scanf(" %[^\n]", nama);
         getchar();
         temp = search_handler(root, nama);
-        if (temp->node_mate != NULL)
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }else if (temp->node_mate != NULL)
         {
             system("cls");
             printf("[ %s ] Sudah menikah, jangan ganggu yang sudah menikah~\n", temp->info.nama);
