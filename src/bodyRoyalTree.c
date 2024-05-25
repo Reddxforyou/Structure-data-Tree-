@@ -564,6 +564,12 @@ void make_tree(telm_root *familyTree)
     point_birth_available(familyTree->root->node_fs, "Anak1.2", 20, 'L');
     point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.1", 10, 'L');
     point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.2", 9, 'L');
+    point_birth_available(familyTree->root->node_fs->node_fs->node_fs, "Anak1.1.1.1", 5, 'P');
+    point_birth_available(familyTree->root->node_fs->node_fs->node_fs, "Anak1.1.1.2", 3, 'L');
+    point_birth_available(familyTree->root->node_fs->node_fs->node_fs->node_fs, "Anak1.1.1.1.1", 1, 'P');
+    point_birth_available(familyTree->root->node_fs->node_fs->node_fs->node_fs, "Anak1.1.1.1.2", 2, 'L');
+    point_birth_available(familyTree->root->node_fs->node_fs->node_fs->node_fs->node_fs, "Anak1.1.1.1.1.1", 1, 'P');
+    point_birth_available(familyTree->root->node_fs->node_fs->node_fs->node_fs->node_fs, "Anak1.1.1.1.1.2", 2, 'L');
 }
 
 void nikahkan(address root)
@@ -695,6 +701,13 @@ void penerus(address root){
 }
 
 
+void deAlokasi (address P){
+	 if (P != NULL){
+        P=NULL;
+	    free (P);
+     }    
+}
+
 // Function untuk menghitung anggota keluarga yang masih hidup
 // author: Alya Naila Putri Ashadilla
 // I.S. : anggota keluarga yang masih hidup belum diketahui 
@@ -793,6 +806,75 @@ void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
             return;
     }
 }
+
+void deleteNodewithDescendants(address root, infotype name[MAX_NAME_LENGTH]){
+    address temp;
+
+    if(root == NULL) { //mengecek apakah tree kosong
+        printf("Silsilah keluarga kerajaan kosong");
+        return;
+    } 
+    printf("\nsedang mencari %s\n", name);
+    address node = search_handler(root, name);
+    if(node == NULL) { //jika nama tidak ada dalam silsilah keluarga kerajaan
+       printf("Person with name '%s' not found.\n", name);  
+       return;
+    } 
+    
+    //delete pasangan jika ia memiliki pasangan
+    if(node->node_mate != NULL){
+        //kembalikan nilai node mate ke default
+        memset(node->node_mate->info.nama, '\0', sizeof(node->node_mate->info.nama));
+        node->node_mate->info.age = 0;
+        node->node_mate->info.alive = false;
+        node->node_mate->info.gender=Unknown_gender;
+
+        node->node_mate->node_mate = NULL;
+        node->node_mate = NULL;
+        
+    }
+    
+    // periksa apakah dia punya parrent
+    if(node->node_parrent != NULL || node->node_parrent == root){
+        // periksa apakah dia adalah first son
+        if(node->node_parrent->node_fs == node){
+            if(node->node_nb != NULL){
+                    node->node_parrent->node_fs = node->node_nb;
+            }
+        } else { //periksa jika dia bukan first son
+            temp = node->node_parrent->node_fs;
+            while(temp->node_nb != node){
+                 temp = temp->node_nb;
+            }
+            temp->node_nb = node->node_nb;
+        }
+        node->node_parrent = NULL;
+        node->node_nb = NULL;
+    }
+
+    //delete keturunan yang dipunya  
+    if(node->node_fs != NULL){ 
+        temp = node-> node_fs;
+        
+        // mengecek apakah anak memiliki saudara
+        while(temp != NULL){
+            address nextSibling = temp->node_nb; // Simpan saudara berikutnya sebelum menghapus
+            deleteNodewithDescendants(root, temp->info.nama); 
+            temp = nextSibling; //ke saudara berikutnya
+        }
+    }
+
+    //kembalikan nilai node ke nilai default
+    memset(node->info.nama, '\0', sizeof(node->info.nama));
+    node->info.age = 0;        
+    node->info.alive = false;
+    node->info.gender=Unknown_gender;
+    
+    // dealokasi node 
+    deAlokasi(node);
+} 
+
+
 
 
 
