@@ -40,9 +40,13 @@ int main()
     
     //menghapus anak 1 dan keturunannya
     printf("\n");
-    deleteNode(Root(test), "ANAK15");
+    deleteNodewithDescendants(Root(test), "ANAK2");
     printf("\n");
     // deAlokasi(Root(test));
     printTree(Root(test), 0);
+
+    // printtraversal
+    printf("preorder");
+    trav_pre_order(Root(test));
     return 0;
 }

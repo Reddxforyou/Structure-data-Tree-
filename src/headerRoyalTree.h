@@ -189,4 +189,6 @@ int countLivingFamilyMembers(address node);
 // F.S. : generasi dari anggota keluarga diketahui
 int countGenerations(address root, infotype name);
 
+
+void Dealloc(telm_familly *root); 
 #endif

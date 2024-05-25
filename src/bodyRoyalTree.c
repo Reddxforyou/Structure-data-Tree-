@@ -384,20 +384,26 @@ address search(address node, infotype name) {
 // F.S : Tree tercetak dengan garis silsilah tiap generasi
 void printTree(address root, int level) {
     if (root == NULL) return;
-    int i;
-    for (i = 0; i < level; i++) {
-
-        printf("	|");
-    }
-    printf("- %s\n", root->info.nama);
-    if (root->node_mate != NULL)
-    {
-        printf("- %s\n", root->node_mate->info.nama);
-    }
     
+    if (root->info.nama != NULL && root->info.nama[0] != '\0') {
+        int i;
+        for (i = 0; i < level; i++) {
+            printf("    |");
+        }
+        printf("- %s\n", root->info.nama);
+        
+        if (root->node_mate != NULL && root->node_mate->info.nama != NULL && root->node_mate->info.nama[0] != '\0') {
+            for (i = 0; i < level; i++) {
+                printf("    |");
+            }
+            printf("- %s\n", root->node_mate->info.nama);
+        }
+    }
+
     printTree(root->node_fs, level + 1);
     printTree(root->node_nb, level);
 }
+
 
 // Prosedur untuk melakukan traversal secara pre-order
 // author: Daffa Muzhafar & Ais Laksana
@@ -405,15 +411,17 @@ void printTree(address root, int level) {
 // F.S. : Tree dicetak secara pre-order
 void trav_pre_order(address root){
     if (root == NULL) return;
-    printf(" %s", root->info.nama);
-    if (root->node_mate != NULL)
-    {
-        printf(" pasangan dengan %s", root->node_mate->info.nama);
+    if (root->info.nama != NULL && root->info.nama[0] != '\0') {
+        printf(" %s", root->info.nama);
+        if (root->node_mate != NULL && root->node_mate->info.nama != NULL && root->node_mate->info.nama[0] != '\0') {
+            printf(" pasangan dengan %s", root->node_mate->info.nama);
+        }
+        printf("\n");
     }
-    printf("\n");
     trav_pre_order(root->node_fs);
     trav_pre_order(root->node_nb);
 }
+
 
 // Function untuk menghitung nilai maksimum kedalaman dari tree
 // author: Alya Naila Putri Ashadilla
@@ -570,18 +578,17 @@ void successorPrediction(address root, infotype name) {
 // IS : P terdefinisi 
 // FS : P dikembalikan ke sistem 
 void deAlokasi (address P){
-	 if (P != NULL)
-	 {
-        P = NULL;
+	 if (P != NULL){
+        P=NULL;
 	    free (P);
-	 }
+     }    
 }
 
 // Fungsi untuk menghapus salah satu anggota keluarga kerajaan berserta keturunannya
 // author: Alya Naila Putri Ashadilla
 // I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
 // F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
-void deleteNode(address root, infotype name){
+void deleteNodewithDescendants(address root, infotype name){
     address temp;
 
     if(root == NULL) { //mengecek apakah tree kosong
@@ -597,17 +604,24 @@ void deleteNode(address root, infotype name){
     
     //delete pasangan jika ia memiliki pasangan
     if(node->node_mate != NULL){
-        temp = node->node_mate;
+        //kembalikan nilai node mate ke default
+        memset(node->node_mate->info.nama, '\0', sizeof(node->node_mate->info.nama));
+        node->node_mate->info.age = 0;
+        node->node_mate->info.alive = false;
+        node->node_mate->info.gender=Unknown_gender;
+
+        node->node_mate->node_mate = NULL;
         node->node_mate = NULL;
-        temp->node_mate = NULL;
-        temp = NULL;
+        
     }
     
     // periksa apakah dia punya parrent
     if(node->node_parrent != NULL || node->node_parrent == root){
         // periksa apakah dia adalah first son
         if(node->node_parrent->node_fs == node){
-            node->node_parrent->node_fs = node->node_nb;
+            if(node->node_nb != NULL){
+                    node->node_parrent->node_fs = node->node_nb;
+            }
         } else { //periksa jika dia bukan first son
             temp = node->node_parrent->node_fs;
             while(temp->node_nb != node){
@@ -626,10 +640,16 @@ void deleteNode(address root, infotype name){
         // mengecek apakah anak memiliki saudara
         while(temp != NULL){
             address nextSibling = temp->node_nb; // Simpan saudara berikutnya sebelum menghapus
-            deleteNode(root, temp->info.nama); 
+            deleteNodewithDescendants(root, temp->info.nama); 
             temp = nextSibling; //ke saudara berikutnya
         }
     }
+
+    //kembalikan nilai node ke nilai default
+    memset(node->info.nama, '\0', sizeof(node->info.nama));
+    node->info.age = 0;        
+    node->info.alive = false;
+    node->info.gender=Unknown_gender;
     
     // dealokasi node 
     deAlokasi(node);
