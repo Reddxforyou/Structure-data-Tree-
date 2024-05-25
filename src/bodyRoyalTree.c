@@ -719,7 +719,7 @@ int countLivingFamilyMembers(address node) {
 // author: Alya
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
-void successorPrediction(address root, infotype name) {
+void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
     if (root == NULL) {
         printf("Tree is empty.\n");
         return;

@@ -165,7 +165,7 @@ void printTree(address root, int level);
 
 // Prosedur untuk melakukan traversal secara pre-order
 // author: Daffa Muzhafar & Ais Laksana
-// I.S. : Tree belum 
+// I.S. : Tree belum dicetak secara pre-order
 // F.S. : Tree dicetak secara pre-order
 void trav_pre_order(address root);
 
@@ -193,6 +193,20 @@ void tampilkan_informasi(address root);
 void membunuh(address root);
 
 void make_tree(telm_root *familyTree);
+
+
+
+// Fungsi untuk menghitung anggota keluarga yang masih hidup
+// author: Alya Naila Putri Ashadilla
+// I.S. : anggota keluarga yang masih hidup belum diketahui 
+// F.S. : anggota keluarga yang masih hidup sudah diketahui
+int countLivingFamilyMembers(address node);
+
+// Fungsi untuk memprediksi pewaris takhta selanjutnya dari suatu node
+// author: Alya
+// I.S : nama pewaris takhta belum diketahui
+// F.S : nama pewaris takhta telah diketahui
+void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
 
 
 

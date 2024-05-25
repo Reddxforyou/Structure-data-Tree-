@@ -172,7 +172,7 @@ int main()
     telm_root test;
     make_tree(&test);
     // init_Root(&test);
-    // // telm_root *loadedFamilyTree;
+    // // telm_root *loadedFamilyTree
     // // init_Root(loadedFamilyTree);
     // init_Root(&test);
     // Root(test) = alok_available_pers("Root", 50, 'L');
@@ -185,12 +185,9 @@ int main()
     // point_birth_available(Root(test)->node_fs->node_fs, "Anak1.1.2", 9, 'L');
     // save_Tree_To_File("familyTree.txt", &test);
     int i;
-    for ( i = 0; i < 2; i++)
-    {
-        printTree(Root(test), 0);
-        membunuh(Root(test));
-        printTree(Root(test), 0);
-    }
+    i = countLivingFamilyMembers(Root(test));
+    printTree(Root(test), 0);
+    printf("\nJumlah anggota keluarga yang masih hidup: %d\n", i);
     
     
     // telm_root *loadedFamilyTree = loadFamilyTreeFromFile("data/family_tree.txt");   
