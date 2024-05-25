@@ -703,12 +703,17 @@ int countLivingFamilyMembers(address node) {
     int count = 0;
     if (node == NULL){ // Jika node kosong, maka akan mengembalikan nilai 0
         return 0;
-    } else if(node->info.alive == true){ //jika status hidup node bersifat true maka nilai count akan bertambah
+    } else if(node->info.alive){ //jika status hidup node bersifat true maka nilai count akan bertambah
         count++;
     }
-
+    if (node->node_mate != NULL && node->node_mate->info.alive == true)
+    {
+        count++;
+    }
+    
+    
     //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
-    count +=countLivingFamilyMembers(node->node_mate);
+    
     count +=countLivingFamilyMembers(node->node_fs);
     count +=countLivingFamilyMembers(node->node_nb);
 
