@@ -703,12 +703,17 @@ int countLivingFamilyMembers(address node) {
     int count = 0;
     if (node == NULL){ // Jika node kosong, maka akan mengembalikan nilai 0
         return 0;
-    } else if(node->info.alive == true){ //jika status hidup node bersifat true maka nilai count akan bertambah
+    } else if(node->info.alive){ //jika status hidup node bersifat true maka nilai count akan bertambah
         count++;
     }
-
+    if (node->node_mate != NULL && node->node_mate->info.alive == true)
+    {
+        count++;
+    }
+    
+    
     //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
-    count +=countLivingFamilyMembers(node->node_mate);
+    
     count +=countLivingFamilyMembers(node->node_fs);
     count +=countLivingFamilyMembers(node->node_nb);
 
@@ -719,7 +724,7 @@ int countLivingFamilyMembers(address node) {
 // author: Alya
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
-void successorPrediction(address root, infotype name) {
+void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
     if (root == NULL) {
         printf("Tree is empty.\n");
         return;
