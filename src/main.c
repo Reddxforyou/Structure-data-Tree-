@@ -180,12 +180,12 @@ int main()
         printf("\n\t\t\t\t\t\t|        1. Aturan Kerajaan                     |");
         printf("\n\t\t\t\t\t\t|        2. Tambah Anggota Kerajaan             |");
         printf("\n\t\t\t\t\t\t|        3. Tambah Pasangan                     |");
-        printf("\n\t\t\t\t\t\t|        4. Turunkan Raja[x]                    |");
+        printf("\n\t\t\t\t\t\t|        4. Turunkan Raja                       |");
         printf("\n\t\t\t\t\t\t|        5. Bunuh Anggota Kerajaan              |");
         printf("\n\t\t\t\t\t\t|        6. Tampilkan Informasi Anggota         |");
-        printf("\n\t\t\t\t\t\t|        7. Tampilkan Penerus Tahta[bug]        |");
-        printf("\n\t\t\t\t\t\t|        8. Tampilkan Jumlah Anggota[x]         |");
-        printf("\n\t\t\t\t\t\t|        9. Tampilkan Anggota Hidup[bug]        |");								        
+        printf("\n\t\t\t\t\t\t|        7. Tampilkan Penerus Tahta             |");
+        printf("\n\t\t\t\t\t\t|        8. Tampilkan Jumlah Anggota            |");
+        printf("\n\t\t\t\t\t\t|        9. Tampilkan Anggota Hidup             |");								        
         printf("\n\t\t\t\t\t\t|        0. Keluar                              |");
         printf("\n\t\t\t\t\t\t|_______________________________________________|");
         printf("\n\t\t\t\t\t\t\t\tPilih menu (0/1/2/3): ");
