@@ -21,6 +21,8 @@ int main()
     // point_birth_available(Root(test), "Anak15", 5, 'P');
     point_birth_available(Root(test), "Anak1", 5, 'P');
     point_birth_available(Root(test)->node_fs, "Anak25", 3, 'L');
+    point_birth_available(Root(test)->node_fs, "Anak251", 3, 'L');
+    point_birth_available(Root(test)->node_fs, "Anak2511", 3, 'L');
     point_birth_available(Root(test)->node_fs, "Anak22", 3, 'L');
     point_birth_available(Root(test)->node_fs->node_nb, "Anak3", 3, 'L');
     point_birth_available(Root(test)->node_fs->node_nb->node_fs, "Anak4", 3, 'L');
@@ -52,10 +54,13 @@ int main()
     
     // //menghapus anak 1 dan keturunannya
     // printf("\n");
-    // deleteNodewithDescendants(Root(test), "ANAK2");
+    // deleteNodewithDescendants(Root(test), "ANAK");
+    // deleteNode(&(Root(test)->node_fs->node_nb->node_fs->node_fs), "ANAK4");
+    deleteNodeWithDescendants(&(Root(test)), "ANAK2");
+
     // printf("\n");
     // // deAlokasi(Root(test));
-    // printTree(Root(test), 0);
+    printTree(Root(test), 0);
 
     // // printtraversal
     // printf("preorder");

@@ -379,49 +379,51 @@ address search(address node, infotype name) {
 }
 
 // Prosedur untuk mencetak pohon secara rekursif dengan pre order
-// author : Daffa Muzhafar & Ais Laksana
+// author : Daffa Muzhafar
 // I.S : Tree belum tercetak
 // F.S : Tree tercetak dengan garis silsilah tiap generasi
-void printTree(address root, int level) {
-    if (root == NULL) return;
-    
-    if (root->info.nama != NULL && root->info.nama[0] != '\0') {
-        int i;
-        for (i = 0; i < level; i++) {
-            printf("    |");
+void printTree(address root, int level)
+{
+    if (root == NULL)
+        return;
+    int i;
+    for (i = 0; i < level; i++)
+    {
+
+        printf("	|");
+    }
+    printf("- %s\n", root->info.nama);
+    if (root->node_mate != NULL)
+    {
+        for (i = 0; i < level; i++)
+        {
+
+            printf("	|");
         }
-        printf("- %s\n", root->info.nama);
-        
-        if (root->node_mate != NULL && root->node_mate->info.nama != NULL && root->node_mate->info.nama[0] != '\0') {
-            for (i = 0; i < level; i++) {
-                printf("    |");
-            }
-            printf("    X\n      %s\n", root->node_mate->info.nama);
-        }
+        printf("- %s\n", root->node_mate->info.nama);
     }
 
     printTree(root->node_fs, level + 1);
     printTree(root->node_nb, level);
 }
 
-
 // Prosedur untuk melakukan traversal secara pre-order
 // author: Daffa Muzhafar & Ais Laksana
-// I.S. : Tree belum 
+// I.S. : Tree belum
 // F.S. : Tree dicetak secara pre-order
-void trav_pre_order(address root){
-    if (root == NULL) return;
-    if (root->info.nama != NULL && root->info.nama[0] != '\0') {
-        printf(" %s", root->info.nama);
-        if (root->node_mate != NULL && root->node_mate->info.nama != NULL && root->node_mate->info.nama[0] != '\0') {
-            printf(" pasangan dengan %s", root->node_mate->info.nama);
-        }
-        printf("\n");
+void trav_pre_order(address root)
+{
+    if (root == NULL)
+        return;
+    printf(" %s", root->info.nama);
+    if (root->node_mate != NULL)
+    {
+        printf(" pasangan dengan %s", root->node_mate->info.nama);
     }
+    printf("\n");
     trav_pre_order(root->node_fs);
     trav_pre_order(root->node_nb);
 }
-
 
 // Function untuk menghitung nilai maksimum kedalaman dari tree
 // author: Alya Naila Putri Ashadilla
@@ -597,69 +599,29 @@ void deAlokasi (address P){
 // author: Alya Naila Putri Ashadilla
 // I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
 // F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
-void deleteNodewithDescendants(address root, infotype name){
-    address temp;
-
-    if(root == NULL) { //mengecek apakah tree kosong
-        printf("Silsilah keluarga kerajaan kosong");
+void deleteNodeWithDescendants(telm_familly **root, char *name) {
+    // Mengecek apakah tree kosong
+    if (*root == NULL) {
         return;
-    } 
-
-    address node = search(root, name);
-    if(node == NULL) { //jika nama tidak ada dalam silsilah keluarga kerajaan
-       printf("Person with name '%s' not found.\n", name);  
-       return;
-    } 
-    
-    //delete pasangan jika ia memiliki pasangan
-    if(node->node_mate != NULL){
-        //kembalikan nilai node mate ke default
-        memset(node->node_mate->info.nama, '\0', sizeof(node->node_mate->info.nama));
-        node->node_mate->info.age = 0;
-        node->node_mate->info.alive = false;
-        node->node_mate->info.gender=Unknown_gender;
-
-        node->node_mate->node_mate = NULL;
-        node->node_mate = NULL;
-        
-    }
-    
-    // periksa apakah dia punya parrent
-    if(node->node_parrent != NULL || node->node_parrent == root){
-        // periksa apakah dia adalah first son
-        if(node->node_parrent->node_fs == node){
-            if(node->node_nb != NULL){
-                    node->node_parrent->node_fs = node->node_nb;
-            }
-        } else { //periksa jika dia bukan first son
-            temp = node->node_parrent->node_fs;
-            while(temp->node_nb != node){
-                 temp = temp->node_nb;
-            }
-            temp->node_nb = node->node_nb;
-        }
-        node->node_parrent = NULL;
-        node->node_nb = NULL;
     }
 
-    //delete keturunan yang dipunya  
-    if(node->node_fs != NULL){ 
-        temp = node-> node_fs;
-        
-        // mengecek apakah anak memiliki saudara
-        while(temp != NULL){
-            address nextSibling = temp->node_nb; // Simpan saudara berikutnya sebelum menghapus
-            deleteNodewithDescendants(root, temp->info.nama); 
-            temp = nextSibling; //ke saudara berikutnya
-        }
+    // Mencari node dengan nama yang dicari
+    if (strcmp((*root)->info.nama, name) == 0) {
+        // Menghapus node
+        telm_familly *temp = *root;
+        *root = (*root)->node_nb;
+        free(temp);
+        printf("Node with name %s has been deleted.\n", name);
+        return;
     }
 
-    //kembalikan nilai node ke nilai default
-    memset(node->info.nama, '\0', sizeof(node->info.nama));
-    node->info.age = 0;        
-    node->info.alive = false;
-    node->info.gender=Unknown_gender;
+    // Menghapus anak dari node secara rekursif
+    deleteNodeWithDescendants(&((*root)->node_fs), name);
+
+    // Menghapus node sibling secara rekrusif
+    if (*root != NULL) {
+        deleteNodeWithDescendants(&((*root)->node_nb), name);
+    }
+}
+
     
-    // dealokasi node 
-    deAlokasi(node);
-}    
