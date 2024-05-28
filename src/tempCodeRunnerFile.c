@@ -1,1 +1,3 @@
-        printf("line: %s\n", line);
+while((c=fgetc(read))!=EOF){
+	// 	printf("%c", c);
+	// }

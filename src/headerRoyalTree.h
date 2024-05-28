@@ -208,6 +208,7 @@ int countLivingFamilyMembers(address node);
 // F.S : nama pewaris takhta telah diketahui
 void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
 
+void printFromFile(const char* location);
 
 
 #endif
