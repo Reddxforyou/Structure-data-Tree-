@@ -194,6 +194,12 @@ void membunuh(address root);
 
 void make_tree(telm_root *familyTree);
 
+void loadDataFromFile(const char* filename, telm_root *tree) ;
+
+void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName);
+
+address createNode(dataInfo info) ;
+
 
 
 // Fungsi untuk menghitung anggota keluarga yang masih hidup

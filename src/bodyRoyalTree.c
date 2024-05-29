@@ -382,6 +382,7 @@ address search(address node, infotype name[MAX_NAME_LENGTH])
         return result;
     }
     return search(node->node_nb, name);
+
 }
 
 address search_handler(address node, infotype name[MAX_NAME_LENGTH])
@@ -415,7 +416,7 @@ void printTree(address root, int level)
 
         printf("	|");
     }
-    printf("- %s\n", root->info.nama);
+    printf("- %s[%d]\n", root->info.nama, root->info.age);
     if (root->node_mate != NULL)
     {
         for (i = 0; i < level; i++)
@@ -423,7 +424,7 @@ void printTree(address root, int level)
 
             printf("	|");
         }
-        printf("- %s\n", root->node_mate->info.nama);
+        printf("- %s[%d]\n", root->node_mate->info.nama, root->node_mate->info.age);
     }
 
     printTree(root->node_fs, level + 1);
@@ -438,7 +439,7 @@ void trav_pre_order(address root)
 {
     if (root == NULL)
         return;
-    printf(" %s", root->info.nama);
+    print_datainfo(root->info);
     if (root->node_mate != NULL)
     {
         printf(" pasangan dengan %s", root->node_mate->info.nama);
@@ -806,6 +807,99 @@ void printFromFile(const char* location){
 
 	fclose(read);
 }
+
+
+address createNode(dataInfo info) {
+    address newNode = (address)malloc(sizeof(telm_familly));
+    newNode->info = info;
+    newNode->node_mate = NULL;
+    newNode->node_fs = NULL;
+    newNode->node_nb = NULL;
+    newNode->node_parrent = NULL;
+    return newNode;
+}
+
+void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName) {
+    address newNode = createNode(info);
+    if (tree->root == NULL) {
+        tree->root = newNode;
+    } else {
+        address parent = search(tree->root, parentName);
+        address mate = search(tree->root, mateName);
+        address firstSon = search(tree->root, firstSonName);
+        address nextSibling = search(tree->root, nextSiblingName);
+
+        if (parent) {
+            newNode->node_parrent = parent;
+            if (parent->node_fs == NULL) {
+                parent->node_fs = newNode;
+            } else {
+                address sibling = parent->node_fs;
+                while (sibling->node_nb) {
+                    sibling = sibling->node_nb;
+                }
+                sibling->node_nb = newNode;
+            }
+        }
+
+        if (mate) {
+            newNode->node_mate = mate;
+            mate->node_mate = newNode;
+        }
+
+        if (firstSon) {
+            newNode->node_fs = firstSon;
+        }
+
+        if (nextSibling) {
+            newNode->node_nb = nextSibling;
+        }
+    }
+}
+
+void loadDataFromFile(const char* filename, telm_root *tree) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    dataInfo info;
+    char line[MAX_LINE_LENGTH];
+    char mateName[MAX_NAME_LENGTH], firstSonName[MAX_NAME_LENGTH], nextSiblingName[MAX_NAME_LENGTH], parentName[MAX_NAME_LENGTH];
+
+    while (fgets(line, sizeof(line), file)) {
+        if (strstr(line, "# Person") != NULL || strstr(line, "# Root") != NULL || strstr(line, "# Mate") != NULL) {
+            fgets(line, sizeof(line), file); // Read the name line
+            sscanf(line, "name: %s", info.nama);
+            fgets(line, sizeof(line), file); // Read the age line
+            sscanf(line, "age: %d", &info.age);
+            fgets(line, sizeof(line), file); // Read the gender line
+            sscanf(line, "gender: %c", &info.gender);
+            fgets(line, sizeof(line), file); // Read the alive line
+            char aliveStr[MAX_NAME_LENGTH];
+            sscanf(line, "alive: %s", aliveStr);
+            info.alive = (strcmp(aliveStr, "true") == 0);
+
+            fgets(line, sizeof(line), file); // Read the mate line
+            sscanf(line, "mate: %s", mateName);
+            fgets(line, sizeof(line), file); // Read the first_son line
+            sscanf(line, "first_son: %s", firstSonName);
+            fgets(line, sizeof(line), file); // Read the next_sibling line
+            sscanf(line, "next_sibling: %s", nextSiblingName);
+            fgets(line, sizeof(line), file); // Read the parent line
+            sscanf(line, "parent: %s", parentName);
+
+            addMember(tree, info, parentName, mateName, firstSonName, nextSiblingName);
+        }
+    }
+
+    fclose(file);
+}
+
+
+
+
 
 void start(){
     system("cls");
