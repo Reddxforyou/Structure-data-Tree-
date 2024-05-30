@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <windows.h>
 #include <ctype.h>
 #include "BOOLEAN.H"
 
@@ -137,7 +138,7 @@ void point_marriage_unknown(telm_familly *X);
 // author : Ais Laksana
 // I.S : (X->node_mate) pada suatu node masih NULL
 // F.S : (X->node_mate) menunjuk pada node (telm_familly Y) dan sebaliknya
-void point_marriage_available(telm_familly *X, telm_familly *Y);
+void point_marriage_available(telm_familly *X, infotype nama[MAX_NAME_LENGTH], int age, char gender);
 
 // Prosedur untuk menikahkan node dengan node yang diinput user
 // author : Ais Laksana
@@ -192,17 +193,10 @@ void tampilkan_informasi(address root);
 // Procedure to perform killing
 void membunuh(address root);
 
-void make_tree(telm_root *familyTree);
-
-void loadDataFromFile(const char* filename, telm_root *tree) ;
-
-void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName);
-
-address createNode(dataInfo info) ;
+address insert_king(telm_root *L);
 
 
-
-// Fungsi untuk menghitung anggota keluarga yang masih hidup
+// Function untuk menghitung anggota keluarga yang masih hidup
 // author: Alya Naila Putri Ashadilla
 // I.S. : anggota keluarga yang masih hidup belum diketahui 
 // F.S. : anggota keluarga yang masih hidup sudah diketahui
@@ -214,7 +208,37 @@ int countLivingFamilyMembers(address node);
 // F.S : nama pewaris takhta telah diketahui
 void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
 
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int depth(address node);
+
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int countGenerations(address root, infotype name[MAX_NAME_LENGTH]);
+
+// Fungsi untuk menghapus salah satu anggota keluarga kerajaan berserta keturunannya
+// author: Alya Naila Putri Ashadilla
+// I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
+// F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
+void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGTH]);
+
+void cek_king(address *current);
+
+
+address createNode(dataInfo info);
+
+void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName);
+
+void loadDataFromFile(const char* filename, telm_root *tree);
+
 void printFromFile(const char* location);
 
+void timeskip(address root, int year);
+
+void timeskip_input(address root);
 
 #endif
