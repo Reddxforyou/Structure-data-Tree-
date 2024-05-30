@@ -209,7 +209,7 @@ int countLivingFamilyMembers(address node);
 // author: Alya
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
-void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
+address successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
 
 // Function untuk menghitung generasi dari anggota keluarga
 // author: Alya Naila Putri Ashadilla
@@ -228,6 +228,12 @@ int countGenerations(address root, infotype name[MAX_NAME_LENGTH]);
 // I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
 // F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
 void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGTH]);
+
+// Fungsi untuk membuat seseorang menjadi raja
+// author: Alya
+// I.S : nama raja/ratu belum diketahui
+// F.S : nama raja/ratu telah diketahui
+address nextKing(address root, infotype name[MAX_NAME_LENGTH]);
 
 void cek_king(address *current);
 
