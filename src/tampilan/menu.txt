@@ -1,0 +1,21 @@
+                                    _________________.===========.___________________
+                                    |                |=MAIN MENU=|                  |
+                                    |                '==========='                  |
+                                    |                                               |
+                                    |        1. Aturan Kerajaan                     |
+                                    |        2. Tambah Anggota Kerajaan             |
+                                    |        3. Tambah Pasangan                     |
+                                    |        4. Turunkan Raja                       |
+                                    |        5. Bunuh Anggota Kerajaan              |
+                                    |        6. Tampilkan Informasi Anggota         |
+                                    |        7. Tampilkan Penerus Tahta             |
+                                    |        8. Tampilkan Total Anggota             |
+                                    |        9. Tampilkan Anggota Hidup             |
+                                    |        10. Menghitung Generasi Tree           |
+                                    |        11. Tampilkan Keturunan terakhir       |
+                                    |        12. Lewati Tahun                       |
+                                    |        13. Hapus Anggota dan Keturunannya     |
+                                    |        14. Simpan Tree kedalam file           |								        
+                                    |        0. Keluar                              |
+                                    |                                               |
+                                    |_______________________________________________|
