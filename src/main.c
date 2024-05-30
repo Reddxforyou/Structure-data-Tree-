@@ -31,10 +31,10 @@ int main()
     //keluarga 2
     point_birth_available(Root(testing), "Istri", 10, 'L');
 
-
     // print tree secara preorder
     printf("\n");
     point_marriage_available(Root(testing)->node_fs, Root(test)->node_fs->node_nb);
+    Root(test)->node_fs->node_nb->node_mate->node_fs =  Root(test)->node_fs->node_nb->node_fs;
     printTree(Root(test), 0);
     // trav_pre_order(Root(test));
 
@@ -42,25 +42,39 @@ int main()
     // //mencari anak5
     // printf("\n");
     // search(Root(test), "ANAK5");
+    // int d = depth(Root(test));
+    // printf("%d", d);
+    // int count = countGenerations(Root(test),"ISTRI");
+    // printf("%d", count);
 
-    //ubah status hidup menjadi false
-    point_kill(Root(test)->node_fs->node_nb); //anak1
-    point_kill(Root(test)->node_fs->node_nb->node_fs); //anak3
-    point_kill(Root(test)->node_fs->node_nb->node_fs->node_fs);//anak 4
-    
-    // //melihat siapa penerus selanjutnya
-    // printf("\n");
-    successorPrediction(Root(test), "ANAK5");
-    
-    // //menghapus anak 1 dan keturunannya
-    // printf("\n");
-    // deleteNodewithDescendants(Root(test), "ANAK");
-    // deleteNode(&(Root(test)->node_fs->node_nb->node_fs->node_fs), "ANAK4");
-    deleteNodeWithDescendants(&(Root(test)), "ANAK2");
 
-    // printf("\n");
-    // // deAlokasi(Root(test));
-    printTree(Root(test), 0);
+    // //ubah status hidup menjadi false
+    // point_kill(Root(test)->node_fs->node_nb); //anak1
+    // point_kill(Root(test)->node_fs->node_nb->node_fs); //anak3
+    // point_kill(Root(test)->node_fs->node_nb->node_fs->node_fs);//anak 4
+    
+    // // //melihat siapa penerus selanjutnya
+    // // printf("\n");
+    infotype name = "ANAK5";
+    address succes = successorPrediction(Root(test), name);
+    if(succes->info.nama != NULL){
+        printf("heir: %s", succes->info.nama);
+    } 
+
+    infotype King = "ANAK4";
+    address king = nextKing(Root(test), name);
+    printf("Our king is: %s", king->info.nama);
+    
+    
+    // // //menghapus anak 1 dan keturunannya
+    // // printf("\n");
+    // // deleteNodewithDescendants(Root(test), "ANAK");
+    // // deleteNode(&(Root(test)->node_fs->node_nb->node_fs->node_fs), "ANAK4");
+    // deleteNodeWithDescendants(&(Root(test)), "ANAK2");
+
+    // // printf("\n");
+    // // // deAlokasi(Root(test));
+    // printTree(Root(test), 0);
 
     // // printtraversal
     // printf("preorder");

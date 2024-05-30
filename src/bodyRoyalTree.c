@@ -429,29 +429,23 @@ void trav_pre_order(address root)
 // author: Alya Naila Putri Ashadilla
 // I.S. : Maksimum kedalaman dari tree belum diketahui 
 // F.S. : Maksimum kedalaman dari tree sudah diketahui
-int depth(address node) {
-    if (node == NULL) { //jika node kosong, maka akan mengembalikan nilai 0
-        return 0;
-    } else { //jika node tidak kosong 
-        int maxDepth = 0;
+int depth(address root) {
+	int fs,nb;
 
-        if (node->node_fs != NULL) {// jika anak dari node tidak kosong
-             // Hitung kedalaman dari anak pertama (fs) dari node
-            int depth_fs = depth(node->node_fs);
-            if (depth_fs > maxDepth) {// Ubah nilai maksimal dari kedalaman dengan kedalaman anak pertama, jika nilainya lebih besar
-                maxDepth = depth_fs;
-            }
-        }
-        if (node->node_nb != NULL) { // jika saudara dari node tidak kosong
-            int depth_nb = depth(node->node_nb);
-
-            if (depth_nb > maxDepth) {  // Ubah nilai maksimal dari kedalaman dengan kedalaman saudara, jika nilainya lebih besar
-                maxDepth = depth_nb;
-            }
-        }
-        return maxDepth + 1;
+	if(root==NULL){
+        return -1;
+    }
+		
+    fs=depth(root->node_fs);
+	nb=depth(root->node_nb);
+	if (fs > nb){
+        return (fs+1);
+    } else{
+        return (nb+1);
     }
 }
+
+
 
 // Function untuk menghitung generasi dari anggota keluarga
 // author: Alya Naila Putri Ashadilla
@@ -467,9 +461,7 @@ int countGenerations(address root, infotype name) {
         if (node == NULL) {
             printf("Person with name '%s' not found.\n", name);
             return 0;
-        } else if (node->node_parrent == NULL) { // Jika node adalah akar, maka generasinya adalah 1
-            return 1;
-        } else {
+        }  else {
             // Hitung kedalaman dari akar pohon
             int treeDepth = depth(root);
 
@@ -477,7 +469,7 @@ int countGenerations(address root, infotype name) {
             int nodeDepth = depth(node);
 
             // Generasi adalah selisih antara kedalaman akar pohon dan kedalaman node
-            return treeDepth - nodeDepth + 1;
+            return treeDepth - nodeDepth;
         }
     }
 }
@@ -503,13 +495,13 @@ int countLivingFamilyMembers(address node) {
 }
 
 // Fungsi untuk memprediksi pewaris takhta selanjutnya dari suatu node
-// author: Alya Naila Putri Ashadilla
+// author: Alya
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
-void successorPrediction(address root, infotype name) {
+address successorPrediction(address root, infotype name) {
     if (root == NULL) {
         printf("Tree is empty.\n");
-        return;
+        return root;
     }
 
     // Cari node dengan nama yang sesuai
@@ -517,13 +509,11 @@ void successorPrediction(address root, infotype name) {
 
     if (current == NULL) {
         printf("Person with name '%s' not found.\n", name); 
-        return;
     }else {
         // Lakukan prediksi berdasarkan aturan penurunan tahta
         // Jika memiliki anak dan masih hidup, pewaris tahta adalah anak pertama yang masih hidup
         if ((current->node_fs != NULL) && (current->node_fs->info.alive == true)) {
-            printf("Predicted heir: %s\n", current->node_fs->info.nama);
-            return;
+            return current->node_fs;
         }
 
         // Jika tidak memiliki anak tapi memiliki saudara, pewaris tahta adalah saudara pertama yang masih hidup
@@ -533,9 +523,8 @@ void successorPrediction(address root, infotype name) {
                 temp = temp->node_nb;
             }
             if (temp != NULL) {
-                printf("Predicted heir: %s\n", temp->info.nama);
-                return;
-            } 
+                return temp;
+            }
         }
 
         // Cari pewaris tahta di antara saudara-saudara orang tua
@@ -545,8 +534,7 @@ void successorPrediction(address root, infotype name) {
                 temp = temp->node_nb;
             }
             if (temp != NULL) {
-                    printf("Predicted heir: %s\n", temp->info.nama);
-                    return;
+                    return temp;
             }
 
         }
@@ -556,30 +544,37 @@ void successorPrediction(address root, infotype name) {
             if(current->node_parrent->node_nb != current && current->node_parrent->node_nb->node_fs != NULL){
                 address temp = current->node_parrent->node_nb;
                 successorPrediction(temp, temp->info.nama);
-                return;
             }
         }
 
         // Jika tidak ada sepupu, perlu untuk memeriksa di atas
-        if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL) {
-            address temp = current->node_parrent;
-            while(temp != NULL && temp->info.alive != true) {
-                //mencari pewaris takhta berdasarkan pasangannya 
-                if(temp->node_mate != NULL && temp->node_mate->info.alive==true){
-                    printf("Predicted heir: %s\n", temp->node_mate->info.nama);
-                    return;
-                }
-                temp = temp->node_parrent;
-            } 
-            if(temp != NULL){
-                printf("Predicted heir: %s\n", temp->info.nama);
-                return; 
-            }
+        if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL && current->node_parrent->node_parrent->node_nb != NULL) {
+            successorPrediction(current->node_parrent->node_parrent->node_nb, current->node_parrent->node_parrent->node_nb->info.nama);
         }
         
         // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
         printf("No predicted heir found for %s.\n", name);
-        return;
+        return NULL;
+    }
+}
+
+// Fungsi untuk membuat seseorang menjadi raja
+// author: Alya
+// I.S : nama raja/ratu belum diketahui
+// F.S : nama raja/ratu telah diketahui
+address nextKing(address root, infotype name){
+    if (root == NULL) {
+        printf("Tree is empty.\n");
+        return NULL;
+    }
+
+    // Cari node dengan nama yang sesuai
+    address current = search(root, name);
+    
+    if(current->info.alive == true){
+        return current;
+    } else {
+        successorPrediction(root, name);
     }
 }
 

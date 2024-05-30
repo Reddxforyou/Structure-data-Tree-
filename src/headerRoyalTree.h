@@ -175,7 +175,7 @@ int Depth(telm_familly *node);
 // author: Alya
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
-void successorPrediction(address root, infotype name);
+address successorPrediction(address root, infotype name);
 
 // Function untuk menghitung anggota keluarga yang masih hidup
 // author: Alya Naila Putri Ashadilla
