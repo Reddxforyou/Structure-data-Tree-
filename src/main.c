@@ -1,92 +1,132 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "bodyRoyalTree.c"
-#include <ctype.h>
-#include "BOOLEAN.H"
 
+int count_all_member(address node) {
+    int count = 0;
+    if (node == NULL){ // Jika node kosong, maka akan mengembalikan nilai 0
+        return 0;
+    } else{ //jika status hidup node bersifat true maka nilai count akan bertambah
+        count++;
+    }
+    if (node->node_mate != NULL)
+    {
+        count++;
+    }
+    
+    
+    //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
+    count +=count_all_member(node->node_fs);
+    count +=count_all_member(node->node_nb);
 
-
-
-// // Fungsi untuk membaca isi file
-// void readFile(Node* root) {
-//     char filename[100];
-//     printf("Masukkan nama file: ");
-//     fgets(filename, sizeof(filename), stdin);
-//     // Menghapus newline character yang tersisa
-//     filename[strcspn(filename, "\n")] = 0;
-
-//     // Debug: Print nama file yang dimasukkan
-//     printf("Membuka file: %s\n", filename);
-
-//     FILE* file = fopen(filename, "r");
-//     if (file == NULL) {
-//         printf("Tidak bisa membuka file %s\n", filename);
-//         return;
-//     }
-
-//     char line[256];
-//     while (fgets(line, sizeof(line), file)) {
-//         // Menghapus newline character yang tersisa
-//         line[strcspn(line, "\n")] = 0;
-
-//         // Debug: Print setiap baris yang dibaca
-//         printf("Membaca baris: %s\n", line);
-
-//         // Cek apakah ini teks biasa atau sandi Morse
-//         if (strchr(line, '.') != NULL || strchr(line, '-') != NULL) {
-//             // Ini adalah sandi Morse
-//             printf("Teks asli dari sandi Morse: ");
-//             morseTextToChar(root, line);
-//         } else {
-//             // Ini adalah teks biasa
-//             printf("Sandi Morse dari teks: ");
-//             textToMorse(root, line);
-//         }
-//         printf("\n");
-//     }
-
-//     fclose(file);
-
-//     printf("Tekan enter untuk kembali ke menu utama...");
-//     getchar(); // Menunggu sampai pengguna menekan tombol enter
-// }
-
-
-// address findNodeByName(address root, char* name) {
-//     if (root == NULL) return NULL;
-//     if (strcmp(root->info.nama, name) == 0) return root;
-//     address found = findNodeByName(root->node_fs, name);
-//     if (found) return found;
-//     return findNodeByName(root->node_nb, name);
-// }
-
+    return count;
+}
 
 
 int main()
 {
     system("Color 0B");
-    
-    // masih testing module
     telm_root test;
-
     init_Root(&test);
-    make_tree(&test);
-    // telm_root *loadedFamilyTree
-    // init_Root(loadedFamilyTree);
-    // point_birth_available(Root(test), "Anak2", 5, 'P');
-    // point_birth_available(Root(test)->node_fs, "Anak1.1", 30, 'L');
-    // point_birth_available(Root(test)->node_fs, "Anak1.2", 20, 'L');
-    // point_birth_available(Root(test)->node_fs->node_fs, "Anak1.1.1", 10, 'L');
-    // point_birth_available(Root(test)->node_fs->node_fs, "Anak1.1.2", 9, 'L');
-    printTree(Root(test), 0);
-    save_Tree_To_File("familyTree.txt", &test);
-    loadDataFromFile("familyTree.txt", &test);
-    // telm_root *loadedFamilyTree = loadFamilyTreeFromFile("data/family_tree.txt");   
-    // printTree(loadedFamilyTree, 0);
-    // readFamilyData("familyTree.txt", &test);
-    // char temp_name[MAX_NAME_LENGTH] = "anak1.2.2";
-    // address temp = search_handler(Root(test), temp_name);
+    loading_screen();
+    start();
+    int choice;
+    int insert_choice;
+    do
+    {
+        printf("1. New Tree\n2. Load Tree");
+        printf("\nPilih : ");
+        scanf("%d", &insert_choice);
+        switch (insert_choice)
+        {
+        case 1:
+        	system("cls");
+            printf("1. Input data\n");
+            printf("input data Root\n");
+            test.root = alok_input_pers();
+            break;
+        case 2:
+        	system("cls");
+            loadDataFromFile("familyTree.txt", &test);
+            printf("Data loaded\n");
+            break;
+        default:
+            test.root = NULL;
+            break;
+        }
+    } while (test.root == NULL);
+    address King = insert_king(&test);
+
+    do{
+        system("cls");
+        printFromFile("tampilan/menu.txt");
+        printf("\n");
+        printTree(Root(test), 0);
+        printf("\n");
+        print_king(King);
+        printf("\n\t\t\t\t\t\t\tPilih menu (0-14): ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            Aturan();  
+            break;
+        case 2:
+            tambah_anak(Root(test));
+            break;
+        case 3:
+            nikahkan(Root(test));
+            break;
+        case 4:
+            cek_king(&King);
+            getchar();
+            break;
+        case 5:
+            membunuh(Root(test));
+            break;            
+        case 6:
+            tampilkan_informasi(Root(test));
+            break;
+        case 7:
+            penerus(Root(test));
+            break;
+        case 8:
+            printf("Anggota seluruh keluarga kerajaan adalah berjumlah : %d", count_all_member(Root(test)));
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+            break;
+        case 9:
+            printf("Anggota keluarga kerajaan yang masih hidup berjumlah : %d", countLivingFamilyMembers(Root(test)));
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+            break;
+        case 10:
+            menghitung_generasi(Root(test));//bugggggggggggggggggggg
+            break;
+        case 11:
+            jumlah_generasi_terakhir(Root(test));
+            break;
+        case 12:
+            timeskip_input(Root(test));
+            break;
+        case 13:
+        	delete_input(Root(test)); //bugggggggggggggggggggggg
+            break;             
+        case 14:
+            save_Tree_To_File("familyTree.txt", &test);
+            break;
+        case 0:
+            printf("\t\t\t\t\t\t\tTerima kasih!\n");
+            break;
+        default:
+            printf("\t\t\t\t\tPilihan tidak valid. Silakan pilih lagi.\n");
+        }
+        if (King == NULL || King->info.alive == false)
+        {
+            cek_king(&King);
+        }
+        printf("\n\tPress any key to continue . . . ");
+        getchar();                                             // Mengambil karakter dari input (enter) untuk melanjutkan
+    }while(choice != 0);
 
     return 0;
 }
