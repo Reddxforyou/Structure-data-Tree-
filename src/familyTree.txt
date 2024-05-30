@@ -1,80 +1,260 @@
 # Root
-name: ROOT
-age: 50
-gender: L
+name: ELIZABETH II
+age: 96
+gender: P
 alive: true
-mate: SESEORANG
-first_son: ANAK1
-next_sibling: null
-parent: null
-
-# Mate
-name: SESEORANG
-age: 0
-gender:  
-alive: true
-mate: ROOT
-first_son: ANAK1
+mate: null
+first_son: CHARLES III
 next_sibling: null
 parent: null
 
 # Person
-name: ANAK1
-age: 10
+name: CHARLES III
+age: 75
 gender: L
 alive: true
 mate: null
-first_son: ANAK1.1
-next_sibling: ANAK2
-parent: ROOT
+first_son: WILLIAM A. WINDSOR
+next_sibling: ANNE E. WINDSOR
+parent: ELIZABETH II
 
 # Person
-name: ANAK1.1
-age: 30
+name: WILLIAM A. WINDSOR
+age: 41
 gender: L
 alive: true
 mate: null
-first_son: ANAK1.1.1
-next_sibling: ANAK1.2
-parent: ANAK1
+first_son: GEORGE ALEXANDER LOUIS
+next_sibling: HENRY C. WINDSOR 
+parent: CHARLES III
 
 # Person
-name: ANAK1.1.1
+name: GEORGE ALEXANDER LOUIS
 age: 10
 gender: L
 alive: true
 mate: null
 first_son: null
-next_sibling: ANAK1.1.2
-parent: ANAK1.1
+next_sibling: CHARLOTTE E. DIANA
+parent: WILLIAM A. WINDSOR
 
 # Person
-name: ANAK1.1.2
+name: CHARLOTTE E. DIANA
 age: 9
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: LOUIS ARTHUR CHARLES
+parent: WILLIAM A. WINDSOR
+
+# Person
+name: LOUIS ARTHUR CHARLES
+age: 6
 gender: L
 alive: true
 mate: null
 first_son: null
 next_sibling: null
-parent: ANAK1.1
+parent: WILLIAM A. WINDSOR
 
 # Person
-name: ANAK1.2
-age: 20
+name: HENRY C. WINDSOR 
+age: 39
 gender: L
 alive: true
 mate: null
-first_son: null
+first_son: ARCHIE HARISSON
 next_sibling: null
-parent: ANAK1
+parent: CHARLES III
 
 # Person
-name: ANAK2
+name: ARCHIE HARISSON
 age: 5
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: LILIBET DIANA
+parent: HENRY C. WINDSOR 
+
+# Person
+name: LILIBET DIANA
+age: 2
 gender: P
 alive: true
 mate: null
 first_son: null
 next_sibling: null
-parent: ROOT
+parent: HENRY C. WINDSOR 
+
+# Person
+name: ANNE E. WINDSOR
+age: 73
+gender: P
+alive: true
+mate: null
+first_son: PETER M. PHILILIPS
+next_sibling: ANDREW A. WINDSOR
+parent: ELIZABETH II
+
+# Person
+name: PETER M. PHILILIPS
+age: 46
+gender: L
+alive: true
+mate: null
+first_son: SAVANNAH PHILLIPS
+next_sibling: ZARA A. PHILLIPS
+parent: ANNE E. WINDSOR
+
+# Person
+name: SAVANNAH PHILLIPS
+age: 13
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: ISLA PHILLIPS
+parent: PETER M. PHILILIPS
+
+# Person
+name: ISLA PHILLIPS
+age: 10
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: PETER M. PHILILIPS
+
+# Person
+name: ZARA A. PHILLIPS
+age: 43
+gender: P
+alive: true
+mate: null
+first_son: MIA GRACE TINDALL
+next_sibling: null
+parent: ANNE E. WINDSOR
+
+# Person
+name: MIA GRACE TINDALL
+age: 10
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: LENA ELIZABETH TINDALL
+parent: ZARA A. PHILLIPS
+
+# Person
+name: LENA ELIZABETH TINDALL
+age: 5
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: LUCAS TINDALL
+parent: ZARA A. PHILLIPS
+
+# Person
+name: LUCAS TINDALL
+age: 3
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: ZARA A. PHILLIPS
+
+# Person
+name: ANDREW A. WINDSOR
+age: 64
+gender: L
+alive: true
+mate: null
+first_son: BEATRICE E. WINDSOR
+next_sibling: EDWARD A. WINDSOR
+parent: ELIZABETH II
+
+# Person
+name: BEATRICE E. WINDSOR
+age: 35
+gender: P
+alive: true
+mate: null
+first_son: SIENNA E. MOZZI
+next_sibling: EUGENIE V. WINDSOR
+parent: ANDREW A. WINDSOR
+
+# Person
+name: SIENNA E. MOZZI
+age: 2
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: BEATRICE E. WINDSOR
+
+# Person
+name: EUGENIE V. WINDSOR
+age: 34
+gender: P
+alive: true
+mate: null
+first_son: AUGUST BROOKSBANK
+next_sibling: null
+parent: ANDREW A. WINDSOR
+
+# Person
+name: AUGUST BROOKSBANK
+age: 3
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: ERNEST BROOKSBANK
+parent: EUGENIE V. WINDSOR
+
+# Person
+name: ERNEST BROOKSBANK
+age: 1
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: EUGENIE V. WINDSOR
+
+# Person
+name: EDWARD A. WINDSOR
+age: 60
+gender: L
+alive: true
+mate: null
+first_son: LOUISE A. MOUNTBATTEN-WINDSOR
+next_sibling: null
+parent: ELIZABETH II
+
+# Person
+name: LOUISE A. MOUNTBATTEN-WINDSOR
+age: 20
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: JAMES A. MOUNTBATTEN-WINDSOR
+parent: EDWARD A. WINDSOR
+
+# Person
+name: JAMES A. MOUNTBATTEN-WINDSOR
+age: 16
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: EDWARD A. WINDSOR
 
