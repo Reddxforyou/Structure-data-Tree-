@@ -410,20 +410,19 @@ void printTree(address root, int level)
     if (root == NULL)
         return;
     int i;
+    int j;
     for (i = 0; i < level; i++)
-    {
-
-        printf("	|");
+    {  
+        printf("                |");
     }
-    printf("- %s\n", root->info.nama);
+    printf("- %s[ %c ][ %d ]\n", root->info.nama, root->info.gender ,root->info.age);
     if (root->node_mate != NULL)
     {
         for (i = 0; i < level; i++)
         {
-
-            printf("	|");
+            printf("                |");
         }
-        printf("- %s\n", root->node_mate->info.nama);
+        printf("- %s[ %c ][ %d ]\n", root->node_mate->info.nama, root->node_mate->info.gender, root->node_mate->info.age);
     }
 
     printTree(root->node_fs, level + 1);
@@ -510,188 +509,6 @@ void save_Tree_To_File(const char *filename, telm_root *familyTree)
     serialize_Node(file, familyTree->root, true);
 
     fclose(file);
-}
-
-// prosedur fitur untuk menambah anggota kerajaan
-// author : Ais Laksana & Daffa Muzhafar
-// I.S : node belum di tambah
-// F.S : node sudah di tambah
-void tambah_anak(address root)
-{
-    char name_parent[MAX_NAME_LENGTH];
-    address parent;
-    do
-    {
-        system("cls");
-        printTree(root, 0);
-        printf("Masukkan nama orang tua: ");
-        scanf(" %[^\n]", name_parent);
-        getchar();
-        /* code */
-        parent = search_handler(root, name_parent);
-        if (parent == NULL)
-        {
-            system("cls");
-            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", name_parent);
-            printf("\n\tPress any key to continue . . . ");
-            getch();
-        }
-    } while (parent == NULL && strcmp(name_parent, "\n") != 0);
-
-    if (parent == NULL)
-    {
-        printf("Orang tua tidak ditemukan\n");
-        return;
-    }
-    printf("Data diri calon anak : \n");
-    point_birth_input(parent);
-    system("cls");
-    printTree(root, 0);
-    printf("[ %s ] dikaruniai anak\n", parent->info.nama);
-    printf("\n\tPress any key to continue . . . ");
-    getch();
-    system("cls");
-}
-
-// prosedur untuk dummy data
-void make_tree(telm_root *familyTree)
-{
-    familyTree->root = alok_available_pers("Root", 50, 'L');
-    point_marriage_unknown(familyTree->root);
-    point_birth_available(familyTree->root, "Anak1", 10, 'L');
-    point_birth_available(familyTree->root, "Anak2", 5, 'P');
-    point_birth_available(familyTree->root->node_fs, "Anak1.1", 30, 'L');
-    point_birth_available(familyTree->root->node_fs, "Anak1.2", 20, 'L');
-    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.1", 10, 'L');
-    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.2", 9, 'L');
-}
-
-void nikahkan(address root)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    address temp = NULL;
-    do
-    {
-        system("cls");
-        printTree(root, 0);
-        printf("Siapa yang ingin dinikahkan : \n");
-        char nama[MAX_NAME_LENGTH];
-        scanf(" %[^\n]", nama);
-        getchar();
-        temp = search_handler(root, nama);
-        if (temp->node_mate != NULL)
-        {
-            system("cls");
-            printf("[ %s ] Sudah menikah, jangan ganggu yang sudah menikah~\n", temp->info.nama);
-            temp = NULL;
-            printf("\n\tPress any key to continue . . . ");
-            getch();
-        }
-    } while (temp == NULL);
-    printf("Data diri calon pasangan :\n");
-    point_marriage_input(temp);
-    system("cls");
-    printTree(root, 0);
-    printf("[ %s ] menikah dengan [ %s ] \n", temp->info.nama, temp->node_mate->info.nama);
-    printf("\n\tPress any key to continue . . . ");
-    getch();
-    system("cls");
-}
-
-void tampilkan_informasi(address root)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    address temp = NULL;
-    do
-    {
-        system("cls");
-        printTree(root, 0);
-        printf("Siapa yang ingin dilihat informasinya : \n");
-        infotype nama[MAX_NAME_LENGTH];
-        scanf(" %[^\n]", nama);
-        getchar();
-        temp = search_handler(root, nama);
-        if (temp == NULL)
-        {
-            system("cls");
-            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
-            printf("\n\tPress any key to continue . . . ");
-            getch();
-        }
-    } while (temp == NULL);
-    system("cls");
-    print_datainfo(temp->info);
-    printf("\n\tPress any key to continue . . . ");
-    getch();
-    system("cls");
-}
-
-void membunuh(address root)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    address temp = NULL;
-    do
-    {
-        system("cls");
-        printTree(root, 0);
-        printf("Siapa aggota yang ingin dibunuh : \n");
-        infotype nama[MAX_NAME_LENGTH];
-        scanf(" %[^\n]", nama);
-        getchar();
-        temp = search_handler(root, nama);
-        if (temp == NULL)
-        {
-            system("cls");
-            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
-            printf("\n\tPress any key to continue . . . ");
-            getch();
-        }
-    } while (temp == NULL);
-    system("cls");
-    point_kill(temp);
-    printf("[ %s ] telah meninggal", temp->info.nama);
-    printf("\n\tPress any key to continue . . . ");
-    getch();
-    system("cls");
-}
-
-void penerus(address root){
-    if (root == NULL)
-    {
-        return;
-    }
-    address temp = NULL;
-    do
-    {
-        system("cls");
-        printTree(root, 0);
-        printf("Siapa yang ingin dilihat informasinya : \n");
-        infotype nama[MAX_NAME_LENGTH];
-        scanf(" %[^\n]", nama);
-        getchar();
-        temp = search_handler(root, nama);
-        if (temp == NULL)
-        {
-            system("cls");
-            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
-            printf("\n\tPress any key to continue . . . ");
-            getch();
-        }
-    } while (temp == NULL);
-    system("cls");
-    successorPrediction(root, temp->info.nama);
-    printf("\n\tPress any key to continue . . . ");
-    getch();
-    system("cls");
 }
 
 
@@ -897,6 +714,246 @@ void loadDataFromFile(const char* filename, telm_root *tree) {
     fclose(file);
 }
 
+void gotoxy(int X, int y) {
+	COORD coord;
+	coord.X = X;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void loading_screen() {
+	int i;
+	gotoxy(50, 10); printf("Loading...");
+	gotoxy(50, 12);
+	for (i = 0; i <= 17; i++) {
+		Sleep(90);
+		printf("%c", 177);
+	}
+	printf("\n\n");
+	system("pause");
+	system("cls");
+}
+
+
+
+// prosedur fitur untuk menambah anggota kerajaan
+// author : Ais Laksana & Daffa Muzhafar
+// I.S : node belum di tambah
+// F.S : node sudah di tambah
+void tambah_anak(address root)
+{
+    char name_parent[MAX_NAME_LENGTH];
+    address parent;
+    do
+    {
+        system("cls");
+        printTree(root, 0);
+        printf("Masukkan nama orang tua: ");
+        scanf(" %[^\n]", name_parent);
+        getchar();
+        /* code */
+        parent = search_handler(root, name_parent);
+        if (parent == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", name_parent);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (parent == NULL && strcmp(name_parent, "\n") != 0);
+
+    if (parent == NULL)
+    {
+        printf("Orang tua tidak ditemukan\n");
+        return;
+    }
+    printf("Data diri calon anak : \n");
+    point_birth_input(parent);
+    system("cls");
+    printTree(root, 0);
+    printf("[ %s ] dikaruniai anak\n", parent->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+}
+
+// prosedur untuk dummy data
+void make_tree(telm_root *familyTree)
+{
+    familyTree->root = alok_available_pers("Root", 50, 'L');
+    point_marriage_unknown(familyTree->root);
+    point_birth_available(familyTree->root, "Anak1", 10, 'L');
+    point_birth_available(familyTree->root, "Anak2", 5, 'P');
+    point_birth_available(familyTree->root->node_fs, "Anak1.1", 30, 'L');
+    point_birth_available(familyTree->root->node_fs, "Anak1.2", 20, 'L');
+    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.1", 10, 'L');
+    point_birth_available(familyTree->root->node_fs->node_fs, "Anak1.1.2", 9, 'L');
+}
+
+void nikahkan(address root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    address temp = NULL;
+    do
+    {
+        system("cls");
+        printTree(root, 0);
+        printf("Siapa yang ingin dinikahkan : \n");
+        char nama[MAX_NAME_LENGTH];
+        scanf(" %[^\n]", nama);
+        getchar();
+        temp = search_handler(root, nama);
+        if (temp->node_mate != NULL)
+        {
+            system("cls");
+            printf("[ %s ] Sudah menikah, jangan ganggu yang sudah menikah~\n", temp->info.nama);
+            temp = NULL;
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    printf("Data diri calon pasangan :\n");
+    point_marriage_input(temp);
+    system("cls");
+    printTree(root, 0);
+    printf("[ %s ] menikah dengan [ %s ] \n", temp->info.nama, temp->node_mate->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+}
+
+void tampilkan_informasi(address root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    address temp = NULL;
+    do
+    {
+        system("cls");
+        printTree(root, 0);
+        printf("Siapa yang ingin dilihat informasinya : \n");
+        infotype nama[MAX_NAME_LENGTH];
+        scanf(" %[^\n]", nama);
+        getchar();
+        temp = search_handler(root, nama);
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    system("cls");
+    print_datainfo(temp->info);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+}
+
+void membunuh(address root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    address temp = NULL;
+    do
+    {
+        system("cls");
+        printTree(root, 0);
+        printf("Siapa aggota yang ingin dibunuh : \n");
+        infotype nama[MAX_NAME_LENGTH];
+        scanf(" %[^\n]", nama);
+        getchar();
+        temp = search_handler(root, nama);
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    system("cls");
+    point_kill(temp);
+    printf("[ %s ] telah meninggal", temp->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+}
+
+void penerus(address root){
+    if (root == NULL)
+    {
+        return;
+    }
+    address temp = NULL;
+    do
+    {
+        system("cls");
+        printTree(root, 0);
+        printf("Siapa yang ingin dilihat informasinya : \n");
+        infotype nama[MAX_NAME_LENGTH];
+        scanf(" %[^\n]", nama);
+        getchar();
+        temp = search_handler(root, nama);
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    system("cls");
+    successorPrediction(root, temp->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+}
+
+
+// modul meng insert raja pertama
+address insert_king(telm_root *L){
+    infotype nama[MAX_NAME_LENGTH];
+    address King = NULL;
+    do
+    {
+        printTree(L->root, 0);
+        printf("Masukkan nama raja : ");
+        scanf(" %[^\n]", &nama);
+        King = search_handler(L->root, nama);
+         if (King == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (King == NULL);
+    system("cls");
+    printf("[ %s ] telah menjadi Raja/Ratu yang baru", King->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+    return King;
+}
+
+void print_king(address King){
+    if (King == NULL)
+    {
+        printf("Tahta saat ini kosong\n");
+    }else{
+        printf("Raja/Ratu saat ini : %s\n", King->info.nama);
+        printf("Umur : %d\n", King->info.age);
+    }
+}
 
 
 void start(){

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <windows.h>
 #include <ctype.h>
 #include "BOOLEAN.H"
 
@@ -191,6 +192,8 @@ void tampilkan_informasi(address root);
 
 // Procedure to perform killing
 void membunuh(address root);
+
+address insert_king(telm_root *L);
 
 void make_tree(telm_root *familyTree);
 
