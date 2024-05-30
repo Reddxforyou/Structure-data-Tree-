@@ -233,10 +233,14 @@ address createNode(dataInfo info);
 
 void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName);
 
-
 void loadDataFromFile(const char* filename, telm_root *tree);
 
 void printFromFile(const char* location);
+
+void timeskip(address root, int year);
+
+void timeskip_input(address root);
+
 
 
 

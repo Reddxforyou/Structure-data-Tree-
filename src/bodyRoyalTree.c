@@ -531,7 +531,6 @@ int countLivingFamilyMembers(address node) {
     
     
     //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
-    count +=countLivingFamilyMembers(node->node_mate);
     count +=countLivingFamilyMembers(node->node_fs);
     count +=countLivingFamilyMembers(node->node_nb);
 
@@ -692,6 +691,24 @@ void deleteNodeWithDescendants(telm_familly **root, char *name) {
         deleteNodeWithDescendants(&((*root)->node_nb), name);
     }
 }
+
+
+
+int countLastDescendants(address root) {
+    if (root == NULL) {
+        return 0;
+    } else if (root->node_fs == NULL && root->node_nb == NULL) {
+        printf("%s\n", root->info.nama);
+        return 1;
+    } else {
+        int count = 0;
+        count += countLastDescendants(root->node_fs);
+        count += countLastDescendants(root->node_nb);
+        return count;
+    }
+}
+
+
 
 void printFromFile(const char* location){
 	FILE *read;
@@ -1060,6 +1077,46 @@ void menghitung_generasi(address root){
     system("cls");
 }
 
+// Menambahkan umur tiap anggota kerajan dengan parameter year
+// author : Ais Laksana
+// I.S : umur belum bertambah
+// F.S : umur bertambah sesuai dengan parameter
+void timeskip(address root, int year){
+    if (root == NULL)
+        return;
+    root->info.age += year;
+    if (root->node_mate != NULL)
+    {
+        root->node_mate->info.age += year;
+    }
+    
+
+    timeskip(root->node_fs, year);
+    timeskip(root->node_nb, year);
+}
+
+
+void timeskip_input(address root){
+    int year;
+    printf("Masukkan tahun yang ingin dilewati : ");
+    scanf("%d", &year);
+    timeskip(root, year);
+    printf("Waktu telah dilewati %d tahun\n", year);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+
+}
+
+
+
+void jumlah_generasi_terakhir(address root){
+    printf("Jumlah generasi terakhir : %d\n", countLastDescendants(root));
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+
+}
 
 
 void start(){

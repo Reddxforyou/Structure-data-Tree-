@@ -2,8 +2,6 @@
 #include "bodyRoyalTree.c"
 
 
-
-
 int main()
 {
     system("Color 0B");
@@ -76,6 +74,10 @@ int main()
         case 10:
             menghitung_generasi(Root(test));
             break;
+        case 11:
+            jumlah_generasi_terakhir(Root(test));
+        case 12:
+            timeskip_input(Root(test));
         case 0:
             printf("\t\t\t\t\t\tTerima kasih!\n");
             break;
