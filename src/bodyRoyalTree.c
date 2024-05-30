@@ -667,7 +667,7 @@ int countGenerations(address root, infotype name[MAX_NAME_LENGTH]) {
 // author: Alya Naila Putri Ashadilla
 // I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
 // F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
-void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGTH]) {
+void deleteNodeWithDescendants(address *root, infotype name[MAX_NAME_LENGTH]) {
     // Mengecek apakah tree kosong
     if (*root == NULL) {
         return;
@@ -975,14 +975,14 @@ void membunuh(address root)
             system("cls");
             printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
             printf("\n\tPress any key to continue . . . ");
-            getch();
+            getchar();
         }
     } while (temp == NULL);
     system("cls");
     point_kill(temp);
     printf("[ %s ] telah meninggal", temp->info.nama);
     printf("\n\tPress any key to continue . . . ");
-    getch();
+    getchar();
     system("cls");
 }
 
@@ -1106,6 +1106,96 @@ void timeskip_input(address root){
     getch();
     system("cls");
 
+}
+
+
+void cek_king(address *current)
+{
+    // Check if the current node has a living child
+    if ((*current)->node_fs != NULL && (*current)->node_fs->info.alive)
+    {
+        *current = (*current)->node_fs;
+        printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+        return;
+    }
+
+    // Check if the current node has a living sibling
+    if ((*current)->node_nb != NULL)
+    {
+        address temp = (*current)->node_nb;
+        while (temp != NULL && !temp->info.alive)
+        {
+            temp = temp->node_nb;
+        }
+        if (temp != NULL)
+        {
+            *current = temp;
+            printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+            return;
+        }
+    }
+
+    // Check the siblings of the parent for a living heir
+    if ((*current)->node_parrent != NULL && (*current)->node_parrent->node_nb != NULL)
+    {
+        address temp = (*current)->node_parrent->node_nb;
+        while (temp != NULL && !temp->info.alive)
+        {
+            temp = temp->node_nb;
+        }
+        if (temp != NULL)
+        {
+            *current = temp;
+            printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+            return;
+        }
+    }
+
+    // Check the children of the parent's siblings (cousins) for a living heir
+    if ((*current)->node_parrent != NULL && (*current)->node_parrent->node_nb != NULL)
+    {
+        address temp = (*current)->node_parrent->node_nb;
+        while (temp != NULL)
+        {
+            if (temp->node_fs != NULL)
+            {
+                address tempChild = temp->node_fs;
+                while (tempChild != NULL && !tempChild->info.alive)
+                {
+                    tempChild = tempChild->node_nb;
+                }
+                if (tempChild != NULL)
+                {
+                    *current = tempChild;
+                    printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+                    return;
+                }
+            }
+            temp = temp->node_nb;
+        }
+    }
+
+    // Check higher generations if no heir found among current generation and cousins
+    if ((*current)->node_parrent != NULL && (*current)->node_parrent->node_parrent != NULL)
+    {
+        address temp = (*current)->node_parrent->node_parrent->node_nb;
+        while (temp != NULL)
+        {
+            cek_king(&temp);
+            if (temp->info.alive)
+            {
+                *current = temp;
+                printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+                return;
+            }
+            temp = temp->node_nb;
+        }
+    }
+
+    printf("%s telah digantikan\n", (*current)->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getchar();
+    system("cls");
 }
 
 void delete_input(telm_familly *root){

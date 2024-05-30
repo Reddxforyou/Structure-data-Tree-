@@ -229,6 +229,9 @@ int countGenerations(address root, infotype name[MAX_NAME_LENGTH]);
 // F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
 void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGTH]);
 
+void cek_king(address *current);
+
+
 address createNode(dataInfo info);
 
 void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName);

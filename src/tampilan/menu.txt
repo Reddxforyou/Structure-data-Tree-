@@ -5,13 +5,15 @@
                                     |        1. Aturan Kerajaan                     |
                                     |        2. Tambah Anggota Kerajaan             |
                                     |        3. Tambah Pasangan                     |
-                                    |        4. Turunkan Raja[x]                    |
+                                    |        4. Turunkan Raja                       |
                                     |        5. Bunuh Anggota Kerajaan              |
                                     |        6. Tampilkan Informasi Anggota         |
                                     |        7. Tampilkan Penerus Tahta             |
-                                    |        8. Tampilkan Jumlah Anggota[x]         |
+                                    |        8. Tampilkan Jumlah Anggota            |
                                     |        9. Tampilkan Anggota Hidup             |
-                                    |       10. Menghitung Generasi                 |								        
+                                    |       10. Menghitung Generasi [Bug]           |
+                                    |       11. Timeskip                            |
+                                    |       12. Save Tree                           |								        
                                     |        0. Keluar                              |
                                     |                                               |
                                     |_______________________________________________|
