@@ -76,8 +76,10 @@ int main()
             break;
         case 11:
             jumlah_generasi_terakhir(Root(test));
+            break;
         case 12:
             timeskip_input(Root(test));
+            break;
         case 0:
             printf("\t\t\t\t\t\tTerima kasih!\n");
             break;

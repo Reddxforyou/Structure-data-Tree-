@@ -227,7 +227,7 @@ int countGenerations(address root, infotype name[MAX_NAME_LENGTH]);
 // author: Alya Naila Putri Ashadilla
 // I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
 // F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
-void deleteNodeWithDescendants(telm_familly **root, char *name);
+void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGTH]);
 
 address createNode(dataInfo info);
 

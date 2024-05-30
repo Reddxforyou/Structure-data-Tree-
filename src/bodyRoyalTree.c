@@ -667,7 +667,7 @@ int countGenerations(address root, infotype name[MAX_NAME_LENGTH]) {
 // author: Alya Naila Putri Ashadilla
 // I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
 // F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
-void deleteNodeWithDescendants(telm_familly **root, char *name) {
+void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGTH]) {
     // Mengecek apakah tree kosong
     if (*root == NULL) {
         return;
@@ -1108,7 +1108,28 @@ void timeskip_input(address root){
 
 }
 
-
+void delete_input(telm_familly *root){
+    infotype nama[MAX_NAME_LENGTH];
+    address temp;
+    do
+    {
+        printTree(root->node_fs, 0);
+        printf("Masukkan nama orang yang ingin di cari generasinny : ");
+        scanf(" %[^\n]", &nama);
+        temp = search_handler(root, nama);
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    deleteNodeWithDescendants(&root, nama);
+    printf("%s beserta keturunannya telah dihapus dari sejarah silsilah kerajan\n", temp->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+}
 
 void jumlah_generasi_terakhir(address root){
     printf("Jumlah generasi terakhir : %d\n", countLastDescendants(root));
