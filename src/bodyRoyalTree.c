@@ -251,7 +251,6 @@ void point_birth_input(telm_familly *X)
             node = alok_input_pers();
             if (X->node_fs != NULL && node->info.age > curr_age && curr_age != 0)
             {
-                system("cls");
                 printf("current age inside restriction %d\n", curr_age);
                 printf("Cannot add a brother older than the youngest brother/sister.\n");
                 printf("current youngest brother/sister age : %d\n", curr_age);
@@ -303,8 +302,9 @@ void point_marriage_unknown(telm_familly *X)
 // author : Ais Laksana
 // I.S : (X->node_mate) pada suatu node masih NULL
 // F.S : (X->node_mate) menunjuk pada node (telm_familly Y) dan sebaliknya
-void point_marriage_available(telm_familly *X, telm_familly *Y)
+void point_marriage_available(telm_familly *X, infotype nama[MAX_NAME_LENGTH], int age, char gender)
 {
+    address Y = alok_available_pers(nama, age, gender);
     if (X->node_mate == NULL)
     {
         X->node_mate = Y;
@@ -334,7 +334,7 @@ void point_marriage_input(telm_familly *X)
     {
         X->node_mate = node;
     }
-    else if (node->node_mate == NULL)
+    if (node->node_mate == NULL)
     {
         node->node_mate = X;
     }
@@ -382,7 +382,6 @@ address search(address node, infotype name[MAX_NAME_LENGTH])
         return result;
     }
     return search(node->node_nb, name);
-
 }
 
 address search_handler(address node, infotype name[MAX_NAME_LENGTH])
@@ -411,20 +410,19 @@ void printTree(address root, int level)
     if (root == NULL)
         return;
     int i;
+    int j;
     for (i = 0; i < level; i++)
-    {
-
-        printf("	|");
+    {  
+        printf("                |");
     }
-    printf("- %s[%d]\n", root->info.nama, root->info.age);
+    printf("- %s[ %c ][ %d ]\n", root->info.nama, root->info.gender ,root->info.age);
     if (root->node_mate != NULL)
     {
         for (i = 0; i < level; i++)
         {
-
-            printf("	|");
+            printf("                |");
         }
-        printf("- %s[%d]\n", root->node_mate->info.nama, root->node_mate->info.age);
+        printf("- %s[ %c ][ %d ]\n", root->node_mate->info.nama, root->node_mate->info.gender, root->node_mate->info.age);
     }
 
     printTree(root->node_fs, level + 1);
@@ -439,7 +437,7 @@ void trav_pre_order(address root)
 {
     if (root == NULL)
         return;
-    print_datainfo(root->info);
+    printf(" %s", root->info.nama);
     if (root->node_mate != NULL)
     {
         printf(" pasangan dengan %s", root->node_mate->info.nama);
@@ -513,6 +511,328 @@ void save_Tree_To_File(const char *filename, telm_root *familyTree)
     fclose(file);
 }
 
+
+// Function untuk menghitung anggota keluarga yang masih hidup
+// author: Alya Naila Putri Ashadilla
+// I.S. : anggota keluarga yang masih hidup belum diketahui 
+// F.S. : anggota keluarga yang masih hidup sudah diketahui
+int countLivingFamilyMembers(address node) {
+    int count = 0;
+    if (node == NULL){ // Jika node kosong, maka akan mengembalikan nilai 0
+        return 0;
+    } else if(node->info.alive){ //jika status hidup node bersifat true maka nilai count akan bertambah
+        count++;
+    }
+    if (node->node_mate != NULL && node->node_mate->info.alive == true)
+    {
+        count++;
+    }
+    
+    
+    //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
+    count +=countLivingFamilyMembers(node->node_fs);
+    count +=countLivingFamilyMembers(node->node_nb);
+
+    return count;
+}
+
+// Fungsi untuk memprediksi pewaris takhta selanjutnya dari suatu node
+// author: Alya
+// I.S : nama pewaris takhta belum diketahui
+// F.S : nama pewaris takhta telah diketahui
+void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
+    if (root == NULL) {
+        printf("Tree is empty.\n");
+        return;
+    }
+
+    // Cari node dengan nama yang sesuai
+    address current = search(root, name);;
+
+    if (current == NULL) {
+        printf("Person with name '%s' not found.\n", name); 
+    }else {
+        // Lakukan prediksi berdasarkan aturan penurunan tahta
+        // Jika memiliki anak dan masih hidup, pewaris tahta adalah anak pertama yang masih hidup
+        if ((current->node_fs != NULL) && (current->node_fs->info.alive == true)) {
+            printf("Predicted heir: %s\n", current->node_fs->info.nama);
+            return;
+        }
+
+        // Jika tidak memiliki anak tapi memiliki saudara, pewaris tahta adalah saudara pertama yang masih hidup
+        if (current->node_nb != NULL) {
+            address temp = current->node_nb;
+            while (temp != NULL && temp->info.alive != true) {
+                temp = temp->node_nb;
+            }
+            if (temp != NULL) {
+                printf("Predicted heir: %s\n", temp->info.nama);
+                return;
+            }
+        }
+
+        // Cari pewaris tahta di antara saudara-saudara orang tua
+        if (current->node_parrent != NULL && current->node_parrent->node_nb != NULL) {
+            address temp = current->node_parrent->node_nb;
+            while (temp != NULL && temp->info.alive != true) {
+                temp = temp->node_nb;
+            }
+            if (temp != NULL) {
+                    printf("Predicted heir: %s\n", temp->info.nama);
+                    return;
+            }
+
+        }
+
+        //Jika tidak ada saudara dari orang tua, cari pewaris tahta dari anak saudara orang tua
+       if (current->node_parrent != NULL && current->node_parrent->node_nb != NULL) { 
+            if(current->node_parrent->node_nb != current && current->node_parrent->node_nb->node_fs != NULL){
+                address temp = current->node_parrent->node_nb;
+                successorPrediction(temp, temp->info.nama);
+                return;
+            }
+        }
+
+        // Jika tidak ada sepupu, perlu untuk memeriksa di atas
+        if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL && current->node_parrent->node_parrent->node_nb != NULL) {
+            successorPrediction(current->node_parrent->node_parrent->node_nb, current->node_parrent->node_parrent->node_nb->info.nama);
+            return;
+        }
+        
+        // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
+        printf("No predicted heir found for %s.\n", name);
+        return;
+    }
+}
+
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int depth(address node) {
+    if (node == NULL) { //jika node kosong, maka akan mengembalikan nilai 0
+        return 0;
+    } else { //jika node tidak kosong 
+        int maxDepth = 0;
+
+        if (node->node_fs != NULL) {// jika anak dari node tidak kosong
+             // Hitung kedalaman dari anak pertama (fs) dari node
+            int depth_fs = depth(node->node_fs);
+            if (depth_fs > maxDepth) {// Ubah nilai maksimal dari kedalaman dengan kedalaman anak pertama, jika nilainya lebih besar
+                maxDepth = depth_fs;
+            }
+        }
+        if (node->node_nb != NULL) { // jika saudara dari node tidak kosong
+            int depth_nb = depth(node->node_nb);
+
+            if (depth_nb > maxDepth) {  // Ubah nilai maksimal dari kedalaman dengan kedalaman saudara, jika nilainya lebih besar
+                maxDepth = depth_nb;
+            }
+        }
+        return maxDepth + 1;
+    }
+}
+
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int countGenerations(address root, infotype name[MAX_NAME_LENGTH]) {
+    // Jika root kosong, maka generasi tidak terdefinisi
+    if (root == NULL) {
+        printf("Tree is empty.\n");
+        return 0;
+    } else {
+        address node = search(root, name);
+        if (node == NULL) {
+            printf("Person with name '%s' not found.\n", name);
+            return 0;
+        } else if (node->node_parrent == NULL) { // Jika node adalah akar, maka generasinya adalah 1
+            return 1;
+        } else {
+            // Hitung kedalaman dari akar pohon
+            int treeDepth = depth(root);
+
+            // Hitung kedalaman dari node yang dicari
+            int nodeDepth = depth(node);
+
+            // Generasi adalah selisih antara kedalaman akar pohon dan kedalaman node
+            return treeDepth - nodeDepth + 1;
+        }
+    }
+}
+
+// Fungsi untuk menghapus salah satu anggota keluarga kerajaan berserta keturunannya
+// author: Alya Naila Putri Ashadilla
+// I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
+// F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
+void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGTH]) {
+    // Mengecek apakah tree kosong
+    if (*root == NULL) {
+        return;
+    }
+
+    // Mencari node dengan nama yang dicari
+    if (strcmp((*root)->info.nama, name) == 0) {
+        // Menghapus node
+        telm_familly *temp = *root;
+        *root = (*root)->node_nb;
+        free(temp);
+        printf("Node with name %s has been deleted.\n", name);
+        return;
+    }
+
+    // Menghapus anak dari node secara rekursif
+    deleteNodeWithDescendants(&((*root)->node_fs), name);
+
+    // Menghapus node sibling secara rekrusif
+    if (*root != NULL) {
+        deleteNodeWithDescendants(&((*root)->node_nb), name);
+    }
+}
+
+
+
+int countLastDescendants(address root) {
+    if (root == NULL) {
+        return 0;
+    } else if (root->node_fs == NULL && root->node_nb == NULL) {
+        printf("%s\n", root->info.nama);
+        return 1;
+    } else {
+        int count = 0;
+        count += countLastDescendants(root->node_fs);
+        count += countLastDescendants(root->node_nb);
+        return count;
+    }
+}
+
+
+
+void printFromFile(const char* location){
+	FILE *read;
+	char c;
+
+	read=fopen(location, "rt");
+	while((c=fgetc(read))!=EOF){
+		printf("%c", c);
+	}
+    
+
+	fclose(read);
+}
+
+
+address createNode(dataInfo info) {
+    address newNode = (address)malloc(sizeof(telm_familly));
+    newNode->info = info;
+    newNode->node_mate = NULL;
+    newNode->node_fs = NULL;
+    newNode->node_nb = NULL;
+    newNode->node_parrent = NULL;
+    return newNode;
+}
+
+void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName) {
+    address newNode = createNode(info);
+    if (tree->root == NULL) {
+        tree->root = newNode;
+    } else {
+        address parent = search(tree->root, parentName);
+        address mate = search(tree->root, mateName);
+        address firstSon = search(tree->root, firstSonName);
+        address nextSibling = search(tree->root, nextSiblingName);
+
+        if (parent) {
+            newNode->node_parrent = parent;
+            if (parent->node_fs == NULL) {
+                parent->node_fs = newNode;
+            } else {
+                address sibling = parent->node_fs;
+                while (sibling->node_nb) {
+                    sibling = sibling->node_nb;
+                }
+                sibling->node_nb = newNode;
+            }
+        }
+
+        if (mate) {
+            newNode->node_mate = mate;
+            mate->node_mate = newNode;
+        }
+
+        if (firstSon) {
+            newNode->node_fs = firstSon;
+        }
+
+        if (nextSibling) {
+            newNode->node_nb = nextSibling;
+        }
+    }
+}
+
+void loadDataFromFile(const char* filename, telm_root *tree) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    dataInfo info;
+    char line[MAX_LINE_LENGTH];
+    char mateName[MAX_NAME_LENGTH], firstSonName[MAX_NAME_LENGTH], nextSiblingName[MAX_NAME_LENGTH], parentName[MAX_NAME_LENGTH];
+
+    while (fgets(line, sizeof(line), file)) {
+        if (strstr(line, "# Person") != NULL || strstr(line, "# Root") != NULL || strstr(line, "# Mate") != NULL) {
+            fgets(line, sizeof(line), file); // Read the name line
+            sscanf(line, "name: %s", info.nama);
+            fgets(line, sizeof(line), file); // Read the age line
+            sscanf(line, "age: %d", &info.age);
+            fgets(line, sizeof(line), file); // Read the gender line
+            sscanf(line, "gender: %c", &info.gender);
+            fgets(line, sizeof(line), file); // Read the alive line
+            char aliveStr[MAX_NAME_LENGTH];
+            sscanf(line, "alive: %s", aliveStr);
+            info.alive = (strcmp(aliveStr, "true") == 0);
+
+            fgets(line, sizeof(line), file); // Read the mate line
+            sscanf(line, "mate: %s", mateName);
+            fgets(line, sizeof(line), file); // Read the first_son line
+            sscanf(line, "first_son: %s", firstSonName);
+            fgets(line, sizeof(line), file); // Read the next_sibling line
+            sscanf(line, "next_sibling: %s", nextSiblingName);
+            fgets(line, sizeof(line), file); // Read the parent line
+            sscanf(line, "parent: %s", parentName);
+
+            addMember(tree, info, parentName, mateName, firstSonName, nextSiblingName);
+        }
+    }
+
+    fclose(file);
+}
+
+void gotoxy(int X, int y) {
+	COORD coord;
+	coord.X = X;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void loading_screen() {
+	int i;
+	gotoxy(50, 10); printf("Loading...");
+	gotoxy(50, 12);
+	for (i = 0; i <= 17; i++) {
+		Sleep(90);
+		printf("%c", 177);
+	}
+	printf("\n\n");
+	system("pause");
+	system("cls");
+}
+
+
+
 // prosedur fitur untuk menambah anggota kerajaan
 // author : Ais Laksana & Daffa Muzhafar
 // I.S : node belum di tambah
@@ -552,38 +872,6 @@ void tambah_anak(address root)
     printf("\n\tPress any key to continue . . . ");
     getch();
     system("cls");
-}
-
-// prosedur untuk dummy data
-void make_tree(telm_root *familyTree)
-{
-    familyTree->root = alok_available_pers("ELizabeth II", 96, 'P');
-    //point_marriage_available(familyTree->root->node_mate, "Philip", 99, 'L');
-    point_birth_available(familyTree->root, "Charles III", 75, 'L');
-    point_birth_available(familyTree->root, "Anne E. Windsor", 73, 'P');    
-	point_birth_available(familyTree->root, "Andrew A. windsor", 64, 'L');
-	point_birth_available(familyTree->root, "Edward A. Windsor", 60, 'L');
-    point_birth_available(familyTree->root->node_fs, "William A. Windsor", 41, 'L');
-    point_birth_available(familyTree->root->node_fs, "Henry C. Windsor ", 39, 'L');
-    point_birth_available(familyTree->root->node_fs->node_nb, "Peter M. Phililips", 46, 'L');
-    point_birth_available(familyTree->root->node_fs->node_nb, "Zara A. Phillips", 43, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_nb, "Beatrice E. Windsor", 35, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_nb, "Eugenie V. Windsor", 34, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_nb->node_nb, "Louise A. Mountbatten-Windsor", 20, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_nb->node_nb, "James A. Mountbatten-Windsor", 16, 'L');    
-    point_birth_available(familyTree->root->node_fs->node_fs, "George Alexander Louis", 10, 'L');
-    point_birth_available(familyTree->root->node_fs->node_fs, "Charlotte E. Diana", 9, 'P');
-    point_birth_available(familyTree->root->node_fs->node_fs, "Louis Arthur Charles", 6, 'L');
-    point_birth_available(familyTree->root->node_fs->node_fs->node_nb, "Archie Harisson", 5, 'L');
-    point_birth_available(familyTree->root->node_fs->node_fs->node_nb, "Lilibet Diana", 2, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_fs, "Savannah Phillips", 13, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_fs, "Isla Phillips", 10, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_fs->node_nb, "Mia Grace Tindall", 10, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_fs->node_nb, "Lena Elizabeth Tindall", 5, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_fs->node_nb, "Lucas Tindall", 3, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_nb->node_fs, "Sienna E. Mozzi", 2, 'P');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_nb->node_fs->node_nb, "August Brooksbank", 3, 'L');
-    point_birth_available(familyTree->root->node_fs->node_nb->node_nb->node_fs->node_nb, "Ernest Brooksbank", 1, 'L');
 }
 
 void nikahkan(address root)
@@ -715,221 +1003,232 @@ void penerus(address root){
 }
 
 
-// Function untuk menghitung anggota keluarga yang masih hidup
-// author: Alya Naila Putri Ashadilla
-// I.S. : anggota keluarga yang masih hidup belum diketahui 
-// F.S. : anggota keluarga yang masih hidup sudah diketahui
-int countLivingFamilyMembers(address node) {
-    int count = 0;
-    if (node == NULL){ // Jika node kosong, maka akan mengembalikan nilai 0
-        return 0;
-    } else if(node->info.alive){ //jika status hidup node bersifat true maka nilai count akan bertambah
-        count++;
-    }
-    if (node->node_mate != NULL && node->node_mate->info.alive == true)
+// modul meng insert raja pertama
+address insert_king(telm_root *L){
+    infotype nama[MAX_NAME_LENGTH];
+    address King = NULL;
+    do
     {
-        count++;
-    }
-    
-    
-    //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
-    
-    count +=countLivingFamilyMembers(node->node_fs);
-    count +=countLivingFamilyMembers(node->node_nb);
-
-    return count;
+        printTree(L->root, 0);
+        printf("Masukkan nama raja : ");
+        scanf(" %[^\n]", &nama);
+        King = search_handler(L->root, nama);
+         if (King == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (King == NULL);
+    system("cls");
+    printf("[ %s ] telah menjadi Raja/Ratu yang baru", King->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+    return King;
 }
 
-// Fungsi untuk memprediksi pewaris takhta selanjutnya dari suatu node
-// author: Alya
-// I.S : nama pewaris takhta belum diketahui
-// F.S : nama pewaris takhta telah diketahui
-void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
-    if (root == NULL) {
-        printf("Tree is empty.\n");
+void print_king(address King){
+    if (King == NULL)
+    {
+        printf("Tahta saat ini kosong\n");
+    }else{
+        printf("Raja/Ratu saat ini : %s\n", King->info.nama);
+        printf("Umur : %d\n", King->info.age);
+    }
+}
+
+
+void menghitung_generasi(address root){
+    infotype nama[MAX_NAME_LENGTH];
+    address temp;
+    do
+    {
+        printTree(root, 0);
+        printf("Masukkan nama orang yang ingin di cari generasinny : ");
+        scanf(" %[^\n]", &nama);
+        temp = search_handler(root, nama);
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    printf("[ %s ] merupakan orang digenerasi ke %d", temp->info.nama, countGenerations(root, temp->info.nama));
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+}
+
+// Menambahkan umur tiap anggota kerajan dengan parameter year
+// author : Ais Laksana
+// I.S : umur belum bertambah
+// F.S : umur bertambah sesuai dengan parameter
+void timeskip(address root, int year){
+    if (root == NULL)
+        return;
+    root->info.age += year;
+    if (root->node_mate != NULL)
+    {
+        root->node_mate->info.age += year;
+    }
+    
+
+    timeskip(root->node_fs, year);
+    timeskip(root->node_nb, year);
+}
+
+
+void timeskip_input(address root){
+    int year;
+    printf("Masukkan tahun yang ingin dilewati : ");
+    scanf("%d", &year);
+    timeskip(root, year);
+    printf("Waktu telah dilewati %d tahun\n", year);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+
+}
+
+void cek_king(address *current)
+{
+    // Check if the current node has a living child
+    if ((*current)->node_fs != NULL && (*current)->node_fs->info.alive)
+    {
+        *current = (*current)->node_fs;
+        printf("%s adalah pewaris tahta\n", (*current)->info.nama);
         return;
     }
 
-    // Cari node dengan nama yang sesuai
-    address current = search(root, name);;
-
-    if (current == NULL) {
-        printf("Person with name '%s' not found.\n", name); 
-    }else {
-        // Lakukan prediksi berdasarkan aturan penurunan tahta
-        // Jika memiliki anak dan masih hidup, pewaris tahta adalah anak pertama yang masih hidup
-        if ((current->node_fs != NULL) && (current->node_fs->info.alive == true)) {
-            printf("Predicted heir: %s\n", current->node_fs->info.nama);
+    // Check if the current node has a living sibling
+    if ((*current)->node_nb != NULL)
+    {
+        address temp = (*current)->node_nb;
+        while (temp != NULL && !temp->info.alive)
+        {
+            temp = temp->node_nb;
+        }
+        if (temp != NULL)
+        {
+            *current = temp;
+            printf("%s adalah pewaris tahta\n", (*current)->info.nama);
             return;
         }
-
-        // Jika tidak memiliki anak tapi memiliki saudara, pewaris tahta adalah saudara pertama yang masih hidup
-        if (current->node_nb != NULL) {
-            address temp = current->node_nb;
-            while (temp != NULL && temp->info.alive != true) {
-                temp = temp->node_nb;
-            }
-            if (temp != NULL) {
-                printf("Predicted heir: %s\n", temp->info.nama);
-                return;
-            }
-        }
-
-        // Cari pewaris tahta di antara saudara-saudara orang tua
-        if (current->node_parrent != NULL && current->node_parrent->node_nb != NULL) {
-            address temp = current->node_parrent->node_nb;
-            while (temp != NULL && temp->info.alive != true) {
-                temp = temp->node_nb;
-            }
-            if (temp != NULL) {
-                    printf("Predicted heir: %s\n", temp->info.nama);
-                    return;
-            }
-
-        }
-
-        //Jika tidak ada saudara dari orang tua, cari pewaris tahta dari anak saudara orang tua
-       if (current->node_parrent != NULL && current->node_parrent->node_nb != NULL) { 
-            if(current->node_parrent->node_nb != current && current->node_parrent->node_nb->node_fs != NULL){
-                address temp = current->node_parrent->node_nb;
-                successorPrediction(temp, temp->info.nama);
-                return;
-            }
-        }
-
-        // Jika tidak ada sepupu, perlu untuk memeriksa di atas
-        if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL) {
-            address temp = current->node_parrent;
-            while(temp != NULL && temp->info.alive != true) {
-                temp = temp->node_parrent;
-            } 
-            if(temp != NULL){
-                printf("Predicted heir: %s\n", temp->info.nama);
-                return; 
-            }
-        }
-            // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
-            printf("No predicted heir found for %s.\n", name);
-            return;
     }
-}
 
-void printFromFile(const char* location){
-	FILE *read;
-	char c;
+    // Check the siblings of the parent for a living heir
+    if ((*current)->node_parrent != NULL && (*current)->node_parrent->node_nb != NULL)
+    {
+        address temp = (*current)->node_parrent->node_nb;
+        while (temp != NULL && !temp->info.alive)
+        {
+            temp = temp->node_nb;
+        }
+        if (temp != NULL)
+        {
+            *current = temp;
+            printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+            return;
+        }
+    }
 
-	read=fopen(location, "rt");
-	while((c=fgetc(read))!=EOF){
-		printf("%c", c);
-	}
-    
-
-	fclose(read);
-}
-
-
-address createNode(dataInfo info) {
-    address newNode = (address)malloc(sizeof(telm_familly));
-    newNode->info = info;
-    newNode->node_mate = NULL;
-    newNode->node_fs = NULL;
-    newNode->node_nb = NULL;
-    newNode->node_parrent = NULL;
-    return newNode;
-}
-
-void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName) {
-    address newNode = createNode(info);
-    if (tree->root == NULL) {
-        tree->root = newNode;
-    } else {
-        address parent = search(tree->root, parentName);
-        address mate = search(tree->root, mateName);
-        address firstSon = search(tree->root, firstSonName);
-        address nextSibling = search(tree->root, nextSiblingName);
-
-        if (parent) {
-            newNode->node_parrent = parent;
-            if (parent->node_fs == NULL) {
-                parent->node_fs = newNode;
-            } else {
-                address sibling = parent->node_fs;
-                while (sibling->node_nb) {
-                    sibling = sibling->node_nb;
+    // Check the children of the parent's siblings (cousins) for a living heir
+    if ((*current)->node_parrent != NULL && (*current)->node_parrent->node_nb != NULL)
+    {
+        address temp = (*current)->node_parrent->node_nb;
+        while (temp != NULL)
+        {
+            if (temp->node_fs != NULL)
+            {
+                address tempChild = temp->node_fs;
+                while (tempChild != NULL && !tempChild->info.alive)
+                {
+                    tempChild = tempChild->node_nb;
                 }
-                sibling->node_nb = newNode;
+                if (tempChild != NULL)
+                {
+                    *current = tempChild;
+                    printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+                    return;
+                }
             }
-        }
-
-        if (mate) {
-            newNode->node_mate = mate;
-            mate->node_mate = newNode;
-        }
-
-        if (firstSon) {
-            newNode->node_fs = firstSon;
-        }
-
-        if (nextSibling) {
-            newNode->node_nb = nextSibling;
-        }
-    }
-}
-
-void loadDataFromFile(const char* filename, telm_root *tree) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        return;
-    }
-
-    dataInfo info;
-    char line[MAX_LINE_LENGTH];
-    char mateName[MAX_NAME_LENGTH], firstSonName[MAX_NAME_LENGTH], nextSiblingName[MAX_NAME_LENGTH], parentName[MAX_NAME_LENGTH];
-
-    while (fgets(line, sizeof(line), file)) {
-        if (strstr(line, "# Person") != NULL || strstr(line, "# Root") != NULL || strstr(line, "# Mate") != NULL) {
-            fgets(line, sizeof(line), file); // Read the name line
-            sscanf(line, "name: %s", info.nama);
-            fgets(line, sizeof(line), file); // Read the age line
-            sscanf(line, "age: %d", &info.age);
-            fgets(line, sizeof(line), file); // Read the gender line
-            sscanf(line, "gender: %c", &info.gender);
-            fgets(line, sizeof(line), file); // Read the alive line
-            char aliveStr[MAX_NAME_LENGTH];
-            sscanf(line, "alive: %s", aliveStr);
-            info.alive = (strcmp(aliveStr, "true") == 0);
-
-            fgets(line, sizeof(line), file); // Read the mate line
-            sscanf(line, "mate: %s", mateName);
-            fgets(line, sizeof(line), file); // Read the first_son line
-            sscanf(line, "first_son: %s", firstSonName);
-            fgets(line, sizeof(line), file); // Read the next_sibling line
-            sscanf(line, "next_sibling: %s", nextSiblingName);
-            fgets(line, sizeof(line), file); // Read the parent line
-            sscanf(line, "parent: %s", parentName);
-
-            addMember(tree, info, parentName, mateName, firstSonName, nextSiblingName);
+            temp = temp->node_nb;
         }
     }
 
-    fclose(file);
+    // Check higher generations if no heir found among current generation and cousins
+    if ((*current)->node_parrent != NULL && (*current)->node_parrent->node_parrent != NULL)
+    {
+        address temp = (*current)->node_parrent->node_parrent->node_nb;
+        while (temp != NULL)
+        {
+            cek_king(&temp);
+            if (temp->info.alive)
+            {
+                *current = temp;
+                printf("%s adalah pewaris tahta\n", (*current)->info.nama);
+                return;
+            }
+            temp = temp->node_nb;
+        }
+    }
+
+    printf("%s telah digantikan\n", (*current)->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getchar();
+    system("cls");
 }
 
 
 
+void delete_input(telm_familly *root){
+    infotype nama[MAX_NAME_LENGTH];
+    address temp;
+    do
+    {
+        printTree(root->node_fs, 0);
+        printf("Masukkan nama orang yang ingin di cari generasinny : ");
+        scanf(" %[^\n]", &nama);
+        temp = search_handler(root, nama);
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    deleteNodeWithDescendants(&root, nama);
+    printf("%s beserta keturunannya telah dihapus dari sejarah silsilah kerajan\n", temp->info.nama);
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+}
+
+void jumlah_generasi_terakhir(address root){
+    printf("Jumlah generasi terakhir : %d\n", countLastDescendants(root));
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+
+}
 
 
 void start(){
     system("cls");
-    printFromFile("tampilan_awal.txt");
-    printf("\n\t\t\t\t\t\t\t    Press Enter To Continue");
+    printFromFile("tampilan/tampilan_awal.txt");
+    printf("\n\n\t\t\t\t\t\t\t    Press Enter To Continue");
     getchar();     //Menunggu untuk menekan enter
-    system("cls"); // Membersihkan layar terminal
+    system("cls"); // Membersihkan layar terminal // Membersihkan layar terminal
 }
 
 void Aturan()
 {
-    printFromFile("aturan.txt");
+	system("cls");
+    printFromFile("tampilan/aturan.txt");
     printf("\n");
+    getchar();
 }
