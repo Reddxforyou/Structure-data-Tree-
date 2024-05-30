@@ -209,5 +209,16 @@ int countLivingFamilyMembers(address node);
 void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
 
 
+address createNode(dataInfo info);
+
+void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName);
+
+
+void loadDataFromFile(const char* filename, telm_root *tree);
+
+void printFromFile(const char* location);
+
+
+
 
 #endif

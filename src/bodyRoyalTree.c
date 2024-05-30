@@ -795,88 +795,120 @@ void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
 }
 
 
+void printFromFile(const char* location){
+	FILE *read;
+	char c;
+
+	read=fopen(location, "rt");
+	while((c=fgetc(read))!=EOF){
+		printf("%c", c);
+	}
+    
+
+	fclose(read);
+}
+
+
+address createNode(dataInfo info) {
+    address newNode = (address)malloc(sizeof(telm_familly));
+    newNode->info = info;
+    newNode->node_mate = NULL;
+    newNode->node_fs = NULL;
+    newNode->node_nb = NULL;
+    newNode->node_parrent = NULL;
+    return newNode;
+}
+
+void addMember(telm_root *tree, dataInfo info, char* parentName, char* mateName, char* firstSonName, char* nextSiblingName) {
+    address newNode = createNode(info);
+    if (tree->root == NULL) {
+        tree->root = newNode;
+    } else {
+        address parent = search(tree->root, parentName);
+        address mate = search(tree->root, mateName);
+        address firstSon = search(tree->root, firstSonName);
+        address nextSibling = search(tree->root, nextSiblingName);
+
+        if (parent) {
+            newNode->node_parrent = parent;
+            if (parent->node_fs == NULL) {
+                parent->node_fs = newNode;
+            } else {
+                address sibling = parent->node_fs;
+                while (sibling->node_nb) {
+                    sibling = sibling->node_nb;
+                }
+                sibling->node_nb = newNode;
+            }
+        }
+
+        if (mate) {
+            newNode->node_mate = mate;
+            mate->node_mate = newNode;
+        }
+
+        if (firstSon) {
+            newNode->node_fs = firstSon;
+        }
+
+        if (nextSibling) {
+            newNode->node_nb = nextSibling;
+        }
+    }
+}
+
+void loadDataFromFile(const char* filename, telm_root *tree) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    dataInfo info;
+    char line[MAX_LINE_LENGTH];
+    char mateName[MAX_NAME_LENGTH], firstSonName[MAX_NAME_LENGTH], nextSiblingName[MAX_NAME_LENGTH], parentName[MAX_NAME_LENGTH];
+
+    while (fgets(line, sizeof(line), file)) {
+        if (strstr(line, "# Person") != NULL || strstr(line, "# Root") != NULL || strstr(line, "# Mate") != NULL) {
+            fgets(line, sizeof(line), file); // Read the name line
+            sscanf(line, "name: %s", info.nama);
+            fgets(line, sizeof(line), file); // Read the age line
+            sscanf(line, "age: %d", &info.age);
+            fgets(line, sizeof(line), file); // Read the gender line
+            sscanf(line, "gender: %c", &info.gender);
+            fgets(line, sizeof(line), file); // Read the alive line
+            char aliveStr[MAX_NAME_LENGTH];
+            sscanf(line, "alive: %s", aliveStr);
+            info.alive = (strcmp(aliveStr, "true") == 0);
+
+            fgets(line, sizeof(line), file); // Read the mate line
+            sscanf(line, "mate: %s", mateName);
+            fgets(line, sizeof(line), file); // Read the first_son line
+            sscanf(line, "first_son: %s", firstSonName);
+            fgets(line, sizeof(line), file); // Read the next_sibling line
+            sscanf(line, "next_sibling: %s", nextSiblingName);
+            fgets(line, sizeof(line), file); // Read the parent line
+            sscanf(line, "parent: %s", parentName);
+
+            addMember(tree, info, parentName, mateName, firstSonName, nextSiblingName);
+        }
+    }
+
+    fclose(file);
+}
+
+
 
 void start(){
     system("cls");
-    printf("\n\n");
-	printf("\n\t\t\t\t                                        _____________                          ");
-	printf("\n\t\t\t\t                                       |'+.   |   .+'|                         ");
-	printf("\n\t\t\t\t                                       |___'+.|.+'___|                         ");
-	printf("\n\t\t\t\t                                       |   .+'|'+.   |                         ");
-	printf("\n\t\t\t\t                                       |.+'___|___'+.|                         ");
-	printf("\n\t\t\t\t                                       |                                       ");
-	printf("\n\t\t\t\t                                       |                                       ");
-	printf("\n\t\t\t\t                                      / \\                                      ");
-	printf("\n\t\t\t\t                                     /   \\                                     ");
-	printf("\n\t\t\t\t                                    /     \\                                    ");
-	printf("\n\t\t\t\t                                   /       \\                                   ");
-	printf("\n\t\t\t\t                                  /         \\                                  ");
-	printf("\n\t\t\t\t                              __ /  __   __  \\ __                              "); 
-	printf("\n\t\t\t\t                             |  |__|  |_|  |__|  |                             ");
-	printf("\n\t\t\t\t                             \\                   /                             ");
-	printf("\n\t\t\t\t                          /\\  \\                 /  /\\                          ");
-	printf("\n\t\t\t\t                         /  \\  \\_______________/  /  \\                         ");
-	printf("\n\t\t\t\t                        /    \\  |   _     _   |  /    \\                        ");
-	printf("\n\t\t\t\t                       /      \\ |  |_|   |_|  | /      \\                       ");
-	printf("\n\t\t\t\t                      /________\\|_____________|/________\\                      ");
-	printf("\n\t\t\t\t                      |         |   _     _   |         |                      ");
-	printf("\n\t\t\t\t                      |   __    |  |_|   |_|  |    __   |                      ");
-	printf("\n\t\t\t\t                      |  |__|   |_____________|   |__|  |                      ");
-	printf("\n\t\t\t\t               _   _  |_        |   _     _   |        _|  _   _               ");
-	printf("\n\t\t\t\t              | |_| |_| |_______|  |_|   |_|  |_______| |_| |_| |              ");
-	printf("\n\t\t\t\t              |    _    |    __ |  __     __  | __    |    _    |              ");
-	printf("\n\t\t\t\t     _   _   _|   |_|   |   |  |__|  |___|  |__|  |   |   |_|   |_   _   _     ");
-	printf("\n\t\t\t\t    | |_| |_| |         |   |   __           __   |   |         | |_| |_| |    ");
-	printf("\n\t\t\t\t    |         |    _    |   |  |__|         |__|  |   |    _    |         |    ");
-	printf("\n\t\t\t\t    |    _    |   |_|   |   |       _______       |   |   |_|   |    _    |    ");
-	printf("\n\t\t\t\t    |   |_|   |         |   |      |   |   |      |   |         |   |_|   |    ");
-	printf("\n\t\t\t\t    |         |         |   |      |  0|0  |      |   |         |         |    ");
-	printf("\n\t\t\t\t____|_________|_________|___|______|___|___|______|___|_________|_________|____");
-	printf("\n\t\t   _  _   __   __   _   __    ___   _    _     ___   ____     ___   ____    __   _____   _____   __   __   _");
-	printf("\n\t\t  | |/ / |  | |  \\ | | |  \\  |   | | \\  / |   |   | |  __|   |   \\ | __ \\  |  | |_   _| |  _  | |  | |  \\ | |");
-	printf("\n\t\t  |   /  |  | |   \\| | | _ \\ | | | |  \\/  |   | | | | |__    | | / | || /  |  |   | |   | |_| | |  | |   \\| |");
-	printf("\n\t\t  |   \\  |  | | |\\   | |   / | | | | |\\/| |   | | | |  __|   | | \\ | |\\ \\  |  |   | |   |  _  | |  | | |\\   |");
-	printf("\n\t\t  |_|\\_\\ |__| |_| \\__| |__/  |___| |_|  |_|   |___| |_|      |___/ |_| \\_\\ |__|   |_|   |_| |_| |__| |_| \\__|");
+    printFromFile("tampilan/tampilan_awal.txt");
     printf("\n\n\t\t\t\t\t\t\t    Press Enter To Continue");
     getchar();     //Menunggu untuk menekan enter
-    system("cls"); // Membersihkan layar terminal
+    system("cls"); // Membersihkan layar terminal // Membersihkan layar terminal
 }
 
 void Aturan()
 {
-    printf("\n\t\t__________________________________________________________________________________________________________________________________");
-    printf("\n\t\t|I. Aturan penurunan tahta                                                                                                       |");
-    printf("\n\t\t|   i. Pewaris tahta kerajaan adalah anak sulung (first son) dari keturunan langsung raja.                                       |");
-    printf("\n\t\t|  ii. Aturan primogenetur absolut diterapkan, yang berarti bahwa putra dan putri yang berstatus sebagai anak sulung (first son) |");
-    printf("\n\t\t|      sama-sama memenuhi syarat untuk menjadi pewaris tahta. Ini berarti pewaris tahta tidak dibatasi oleh gender.              |");
-    printf("\n\t\t| iii. Dalam kondisi generasi terakhir, jika pewaris tahta (first son) meninggal maka tahta akan diwariskan ke anak selanjutnya  |");
-    printf("\n\t\t|      (next brother) sebagai pewaris tahta urutan pertama.                                                                      |");
-    printf("\n\t\t|  iv. Jika pewaris tahta tidak memiliki keturunan dan saudara kandungnya juga sudah meninggal, maka tahta dapat diwariskan      |");
-    printf("\n\t\t|      kepada kerabat dekat terdekat yang masih hidup, seperti sepupu atau paman/ibunya.                                         |");
-    printf("\n\t\t|                                                                                                                                |");
-    printf("\n\t\t|II. Aturan penambahan anggota keluarga kerajaan                                                                                 |");
-    printf("\n\t\t|   i. Raja / ratu pertama harus berumur antara 50 - 79                                                                          |");
-    printf("\n\t\t|  ii. Untuk memiliki anak maka harus memiliki pasangan terlebih dahulu                                                          |");
-    printf("\n\t\t| iii. Anak harus berumur minimal 19 tahun lebih muda dari orang tua                                                             |");
-    printf("\n\t\t|  iv. Nama anak tidak boleh sama dengan anggota keluarga lain                                                                   |");
-    printf("\n\t\t|                                                                                                                                |");
-    printf("\n\t\t|III. Aturan penambahan pasangan anggota keluarga kerajaan                                                                       |");
-    printf("\n\t\t|   i. Umur minimal untuk memiliki pasangan adalah 18 tahun                                                                      |");
-    printf("\n\t\t|  ii. Umur minimal pasangan adalah 18 tahun                                                                                     |");
-    printf("\n\t\t| iii. Pasangan harus berlawanan jenis                                                                                           |");
-    printf("\n\t\t|  iv. Jumlah maksimal pasangan adalah 1                                                                                         |");
-    printf("\n\t\t|   v. Nama pasangan tidak boleh sama dengan anggota keluarga lain                                                               |");
-    printf("\n\t\t|                                                                                                                                |");
-    printf("\n\t\t|IV. Aturan penghapusan anggota keluarga kerajaan                                                                                |");
-    printf("\n\t\t|   i. Jika pohon keluarga kosong, tidak ada anggota keluarga yang dapat dihapus                                                 |");
-    printf("\n\t\t|  ii. Jika anggota keluarga yang dihapus adalah daun (leaf) tanpa keturunan, maka dia akan dihapus langsung                     |");
-    printf("\n\t\t| iii. Jika anggota keluarga yang dihapus memiliki saudara berikutnya (next brother), maka dia akan digantikan                   |");
-    printf("\n\t\t|      oleh saudaranya tersebut.                                                                                                 |");
-    printf("\n\t\t|  iv. Jika anggota keluarga yang dihapus adalah putra pertama (first son), maka putra pertama akan digantikan                   |");
-    printf("\n\t\t|      oleh saudara berikutnya.                                                                                                  |");
-    printf("\n\t\t|   v. Jika anggota keluarga yang dihapus adalah raja, maka tahtanya akan dipindahkan ke saudaranya.                             |");
-    printf("\n\t\t|  vi. Anggota kerajaan yang dihapus beserta semua keturunannya, yaitu putra pertama dan saudara-saudaranya,                     |");
-    printf("\n\t\t|      akan dihapus secara berurutan.                                                                                            |");
-    printf("\n\t\t|________________________________________________________________________________________________________________________________|");
+    printFromFile("tampilan/aturan.txt");
     printf("\n");
 }
