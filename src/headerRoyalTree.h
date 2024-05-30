@@ -138,7 +138,7 @@ void point_marriage_unknown(telm_familly *X);
 // author : Ais Laksana
 // I.S : (X->node_mate) pada suatu node masih NULL
 // F.S : (X->node_mate) menunjuk pada node (telm_familly Y) dan sebaliknya
-void point_marriage_available(telm_familly *X, telm_familly *Y);
+void point_marriage_available(telm_familly *X, infotype nama[MAX_NAME_LENGTH], int age, char gender);
 
 // Prosedur untuk menikahkan node dengan node yang diinput user
 // author : Ais Laksana

@@ -74,7 +74,7 @@ int main()
             printf("Anggota keluarga kerajaan yang masih hidup berjumlah : %d", countLivingFamilyMembers(Root(test)));
             break;
         case 10:
-            save_Tree_To_File("familyTree.txt", &test);
+            menghitung_generasi(Root(test));
             break;
         case 0:
             printf("\t\t\t\t\t\tTerima kasih!\n");

@@ -303,8 +303,9 @@ void point_marriage_unknown(telm_familly *X)
 // author : Ais Laksana
 // I.S : (X->node_mate) pada suatu node masih NULL
 // F.S : (X->node_mate) menunjuk pada node (telm_familly Y) dan sebaliknya
-void point_marriage_available(telm_familly *X, telm_familly *Y)
+void point_marriage_available(telm_familly *X, infotype nama[MAX_NAME_LENGTH], int age, char gender)
 {
+    address Y = alok_available_pers(nama, age, gender);
     if (X->node_mate == NULL)
     {
         X->node_mate = Y;
@@ -1034,6 +1035,31 @@ void print_king(address King){
         printf("Umur : %d\n", King->info.age);
     }
 }
+
+
+void menghitung_generasi(address root){
+    infotype nama[MAX_NAME_LENGTH];
+    address temp;
+    do
+    {
+        printTree(root, 0);
+        printf("Masukkan nama orang yang ingin di cari generasinny : ");
+        scanf(" %[^\n]", &nama);
+        temp = search_handler(root, nama);
+        if (temp == NULL)
+        {
+            system("cls");
+            printf("[ %s ] Tidak ditemukan dalam pohon keluarga\n", nama);
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+        }
+    } while (temp == NULL);
+    printf("[ %s ] merupakan generasi ke %d", temp->info.nama, countGenerations(root, temp->info.nama));
+    printf("\n\tPress any key to continue . . . ");
+    getch();
+    system("cls");
+}
+
 
 
 void start(){
