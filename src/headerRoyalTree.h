@@ -199,7 +199,7 @@ void make_tree(telm_root *familyTree);
 
 
 
-// Fungsi untuk menghitung anggota keluarga yang masih hidup
+// Function untuk menghitung anggota keluarga yang masih hidup
 // author: Alya Naila Putri Ashadilla
 // I.S. : anggota keluarga yang masih hidup belum diketahui 
 // F.S. : anggota keluarga yang masih hidup sudah diketahui
@@ -211,6 +211,23 @@ int countLivingFamilyMembers(address node);
 // F.S : nama pewaris takhta telah diketahui
 void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
 
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int depth(address node);
+
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int countGenerations(address root, infotype name[MAX_NAME_LENGTH]);
+
+// Fungsi untuk menghapus salah satu anggota keluarga kerajaan berserta keturunannya
+// author: Alya Naila Putri Ashadilla
+// I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
+// F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
+void deleteNodeWithDescendants(telm_familly **root, char *name);
 
 address createNode(dataInfo info);
 

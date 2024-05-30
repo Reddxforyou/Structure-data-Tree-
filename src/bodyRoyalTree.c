@@ -530,7 +530,7 @@ int countLivingFamilyMembers(address node) {
     
     
     //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
-    
+    count +=countLivingFamilyMembers(node->node_mate);
     count +=countLivingFamilyMembers(node->node_fs);
     count +=countLivingFamilyMembers(node->node_nb);
 
@@ -595,22 +595,102 @@ void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
         }
 
         // Jika tidak ada sepupu, perlu untuk memeriksa di atas
-        if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL) {
-            address temp = current->node_parrent;
-            while(temp != NULL && temp->info.alive != true) {
-                temp = temp->node_parrent;
-            } 
-            if(temp != NULL){
-                printf("Predicted heir: %s\n", temp->info.nama);
-                return; 
-            }
-        }
-            // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
-            printf("No predicted heir found for %s.\n", name);
+        if (current->node_parrent != NULL && current->node_parrent->node_parrent != NULL && current->node_parrent->node_parrent->node_nb != NULL) {
+            successorPrediction(current->node_parrent->node_parrent->node_nb, current->node_parrent->node_parrent->node_nb->info.nama);
             return;
+        }
+        
+        // Jika tidak ada pewaris tahta yang sesuai, maka tidak ada prediksi yang bisa dibuat.
+        printf("No predicted heir found for %s.\n", name);
+        return;
     }
 }
 
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int depth(address node) {
+    if (node == NULL) { //jika node kosong, maka akan mengembalikan nilai 0
+        return 0;
+    } else { //jika node tidak kosong 
+        int maxDepth = 0;
+
+        if (node->node_fs != NULL) {// jika anak dari node tidak kosong
+             // Hitung kedalaman dari anak pertama (fs) dari node
+            int depth_fs = depth(node->node_fs);
+            if (depth_fs > maxDepth) {// Ubah nilai maksimal dari kedalaman dengan kedalaman anak pertama, jika nilainya lebih besar
+                maxDepth = depth_fs;
+            }
+        }
+        if (node->node_nb != NULL) { // jika saudara dari node tidak kosong
+            int depth_nb = depth(node->node_nb);
+
+            if (depth_nb > maxDepth) {  // Ubah nilai maksimal dari kedalaman dengan kedalaman saudara, jika nilainya lebih besar
+                maxDepth = depth_nb;
+            }
+        }
+        return maxDepth + 1;
+    }
+}
+
+// Function untuk menghitung generasi dari anggota keluarga
+// author: Alya Naila Putri Ashadilla
+// I.S. : generasi dari anggota keluarga belum diketahui 
+// F.S. : generasi dari anggota keluarga diketahui
+int countGenerations(address root, infotype name[MAX_NAME_LENGTH]) {
+    // Jika root kosong, maka generasi tidak terdefinisi
+    if (root == NULL) {
+        printf("Tree is empty.\n");
+        return 0;
+    } else {
+        address node = search(root, name);
+        if (node == NULL) {
+            printf("Person with name '%s' not found.\n", name);
+            return 0;
+        } else if (node->node_parrent == NULL) { // Jika node adalah akar, maka generasinya adalah 1
+            return 1;
+        } else {
+            // Hitung kedalaman dari akar pohon
+            int treeDepth = depth(root);
+
+            // Hitung kedalaman dari node yang dicari
+            int nodeDepth = depth(node);
+
+            // Generasi adalah selisih antara kedalaman akar pohon dan kedalaman node
+            return treeDepth - nodeDepth + 1;
+        }
+    }
+}
+
+// Fungsi untuk menghapus salah satu anggota keluarga kerajaan berserta keturunannya
+// author: Alya Naila Putri Ashadilla
+// I.S : anggota keluarga beserta keturunannya masih ada dalam silsilah kerajaan inggris
+// F.S : salah satu anggota keluarga beserta keturunannya sudah terhapus dari silsilah kerajaan inggris
+void deleteNodeWithDescendants(telm_familly **root, char *name) {
+    // Mengecek apakah tree kosong
+    if (*root == NULL) {
+        return;
+    }
+
+    // Mencari node dengan nama yang dicari
+    if (strcmp((*root)->info.nama, name) == 0) {
+        // Menghapus node
+        telm_familly *temp = *root;
+        *root = (*root)->node_nb;
+        free(temp);
+        printf("Node with name %s has been deleted.\n", name);
+        return;
+    }
+
+    // Menghapus anak dari node secara rekursif
+    deleteNodeWithDescendants(&((*root)->node_fs), name);
+
+    // Menghapus node sibling secara rekrusif
+    if (*root != NULL) {
+        deleteNodeWithDescendants(&((*root)->node_nb), name);
+    }
+}
 
 void printFromFile(const char* location){
 	FILE *read;
