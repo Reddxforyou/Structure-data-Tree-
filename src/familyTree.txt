@@ -1,0 +1,370 @@
+# Root
+name: ELIZABETH
+age: 96
+gender: P
+alive: true
+mate: PHILIP
+first_son: CHARLES
+next_sibling: null
+parent: null
+
+# Mate
+name: PHILIP
+age: 99
+gender: L
+alive: true
+mate: ELIZABETH
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: CHARLES
+age: 75
+gender: L
+alive: true
+mate: DIANA
+first_son: WILLIAM
+next_sibling: ANNE
+parent: ELIZABETH
+
+# Mate
+name: DIANA
+age: 36
+gender: P
+alive: true
+mate: CHARLES
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: WILLIAM
+age: 41
+gender: L
+alive: true
+mate: CATHERINE
+first_son: GEORGE
+next_sibling: HENRY
+parent: CHARLES
+
+# Mate
+name: CATHERINE
+age: 42
+gender: P
+alive: true
+mate: WILLIAM
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: GEORGE
+age: 10
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: CHARLOTTE
+parent: WILLIAM
+
+# Person
+name: CHARLOTTE
+age: 9
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: LOUIS
+parent: WILLIAM
+
+# Person
+name: LOUIS
+age: 6
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: WILLIAM
+
+# Person
+name: HENRY
+age: 39
+gender: L
+alive: true
+mate: RACHEL
+first_son: ARCHIE
+next_sibling: null
+parent: CHARLES
+
+# Mate
+name: RACHEL
+age: 42
+gender: P
+alive: true
+mate: HENRY
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: ARCHIE
+age: 5
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: LILIBET
+parent: HENRY
+
+# Person
+name: LILIBET
+age: 2
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: HENRY
+
+# Person
+name: ANNE
+age: 73
+gender: P
+alive: true
+mate: MARK
+first_son: PETER
+next_sibling: ANDREW
+parent: ELIZABETH
+
+# Mate
+name: MARK
+age: 75
+gender: L
+alive: true
+mate: ANNE
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: PETER
+age: 46
+gender: L
+alive: true
+mate: AUTUMN
+first_son: SAVANNAH
+next_sibling: ZARA
+parent: ANNE
+
+# Mate
+name: AUTUMN
+age: 46
+gender: P
+alive: true
+mate: PETER
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: SAVANNAH
+age: 13
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: ISLA
+parent: PETER
+
+# Person
+name: ISLA
+age: 10
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: PETER
+
+# Person
+name: ZARA
+age: 43
+gender: P
+alive: true
+mate: MICHAEL
+first_son: MIA
+next_sibling: null
+parent: ANNE
+
+# Mate
+name: MICHAEL
+age: 45
+gender: L
+alive: true
+mate: ZARA
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: MIA
+age: 10
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: LENA
+parent: ZARA
+
+# Person
+name: LENA
+age: 5
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: LUCAS
+parent: ZARA
+
+# Person
+name: LUCAS
+age: 3
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: ZARA
+
+# Person
+name: ANDREW
+age: 64
+gender: L
+alive: true
+mate: SARAH
+first_son: BEATRICE
+next_sibling: EDWARD
+parent: ELIZABETH
+
+# Mate
+name: SARAH
+age: 64
+gender: P
+alive: true
+mate: ANDREW
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: BEATRICE
+age: 35
+gender: P
+alive: true
+mate: EDOARDO
+first_son: SIENNA
+next_sibling: EUGENIE
+parent: ANDREW
+
+# Mate
+name: EDOARDO
+age: 40
+gender: L
+alive: true
+mate: BEATRICE
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: SIENNA
+age: 2
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: BEATRICE
+
+# Person
+name: EUGENIE
+age: 34
+gender: P
+alive: true
+mate: JACK
+first_son: AUGUST
+next_sibling: null
+parent: ANDREW
+
+# Mate
+name: JACK
+age: 38
+gender: L
+alive: true
+mate: EUGENIE
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: AUGUST
+age: 3
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: ERNEST
+parent: EUGENIE
+
+# Person
+name: ERNEST
+age: 1
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: EUGENIE
+
+# Person
+name: EDWARD
+age: 60
+gender: L
+alive: true
+mate: SOPHIE
+first_son: LOUISE
+next_sibling: null
+parent: ELIZABETH
+
+# Mate
+name: SOPHIE
+age: 59
+gender: P
+alive: true
+mate: EDWARD
+first_son: null
+next_sibling: null
+parent: null
+
+# Person
+name: LOUISE
+age: 20
+gender: P
+alive: true
+mate: null
+first_son: null
+next_sibling: JAMES
+parent: EDWARD
+
+# Person
+name: JAMES
+age: 16
+gender: L
+alive: true
+mate: null
+first_son: null
+next_sibling: null
+parent: EDWARD
+
