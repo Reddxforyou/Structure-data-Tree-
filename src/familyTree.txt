@@ -14,7 +14,7 @@ age: 99
 gender: L
 alive: true
 mate: ELIZABETH
-first_son: null
+first_son: CHARLES
 next_sibling: null
 parent: null
 
@@ -34,7 +34,7 @@ age: 36
 gender: P
 alive: true
 mate: CHARLES
-first_son: null
+first_son: WILLIAM
 next_sibling: null
 parent: null
 
@@ -54,7 +54,7 @@ age: 42
 gender: P
 alive: true
 mate: WILLIAM
-first_son: null
+first_son: GEORGE
 next_sibling: null
 parent: null
 
@@ -104,7 +104,7 @@ age: 42
 gender: P
 alive: true
 mate: HENRY
-first_son: null
+first_son: ARCHIE
 next_sibling: null
 parent: null
 
@@ -144,7 +144,7 @@ age: 75
 gender: L
 alive: true
 mate: ANNE
-first_son: null
+first_son: PETER
 next_sibling: null
 parent: null
 
@@ -164,7 +164,7 @@ age: 46
 gender: P
 alive: true
 mate: PETER
-first_son: null
+first_son: SAVANNAH
 next_sibling: null
 parent: null
 
@@ -204,7 +204,7 @@ age: 45
 gender: L
 alive: true
 mate: ZARA
-first_son: null
+first_son: MIA
 next_sibling: null
 parent: null
 
@@ -231,7 +231,7 @@ parent: ZARA
 # Person
 name: LUCAS
 age: 3
-gender: P
+gender: L
 alive: true
 mate: null
 first_son: null
@@ -254,7 +254,7 @@ age: 64
 gender: P
 alive: true
 mate: ANDREW
-first_son: null
+first_son: BEATRICE
 next_sibling: null
 parent: null
 
@@ -274,7 +274,7 @@ age: 40
 gender: L
 alive: true
 mate: BEATRICE
-first_son: null
+first_son: SIENNA
 next_sibling: null
 parent: null
 
@@ -304,7 +304,7 @@ age: 38
 gender: L
 alive: true
 mate: EUGENIE
-first_son: null
+first_son: AUGUST
 next_sibling: null
 parent: null
 
@@ -344,7 +344,7 @@ age: 59
 gender: P
 alive: true
 mate: EDWARD
-first_son: null
+first_son: LOUISE
 next_sibling: null
 parent: null
 
