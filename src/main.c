@@ -14,12 +14,12 @@ int count_all_member(address node) {
     
     
     //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
+    count +=count_all_member(node->node_mate);
     count +=count_all_member(node->node_fs);
     count +=count_all_member(node->node_nb);
 
     return count;
 }
-
 
 int main()
 {
@@ -100,7 +100,7 @@ int main()
             getch();
             break;
         case 10:
-            menghitung_generasi(Root(test));//bugggggggggggggggggggg
+            menghitung_generasi(Root(test));
             break;
         case 11:
             jumlah_generasi_terakhir(Root(test));
@@ -113,9 +113,16 @@ int main()
             break;             
         case 14:
             save_Tree_To_File("familyTree.txt", &test);
+            printf("Tree telah disimpan");
+            getchar();
             break;
         case 0:
             printf("\t\t\t\t\t\t\tTerima kasih!\n");
+            printf("\t\t\t\t\t\t\tAuthor (Kelompok 9)\n");
+            printf("\t\t\t\t\t\t\tAlya Nayla P\n");
+            printf("\t\t\t\t\t\t\tAis Laksana\n");
+            printf("\t\t\t\t\t\t\tDaffa Muzhaffar F\n");
+            printf("\t\t\t\t\t\t\tMuhammad Hasbi\n");
             break;
         default:
             printf("\t\t\t\t\tPilihan tidak valid. Silakan pilih lagi.\n");
