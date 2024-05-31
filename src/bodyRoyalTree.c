@@ -605,20 +605,27 @@ address successorPrediction(address root, infotype name[MAX_NAME_LENGTH]) {
 // author: Alya Naila Putri Ashadilla
 // I.S. : Maksimum kedalaman dari tree belum diketahui 
 // F.S. : Maksimum kedalaman dari tree sudah diketahui
+// Function to calculate the maximum depth of the tree
 int depth(address root) {
-
-	if(root==NULL){
-        return -1;
-    }
+	int Level = 0;
+	
+	if(root != NULL) {
+		if(Level <= depth((root->node_fs))) {
+			Level = depth((root->node_fs));
+		}
 		
-    int fs = depth(root->node_fs);
-	int nb = depth(root->node_nb);
-	if (fs > nb){
-        return (fs+1);
-    } else{
-        return (nb+1);
-    }
+		Level = Level + 1;
+		
+		if(Level <= depth((root->node_nb))) {
+			Level = depth((root->node_nb));
+		}
+	}
+	
+	return Level;
 }
+
+
+
 
 
 
@@ -1227,6 +1234,7 @@ void delete_input(telm_familly *root){
     } while (temp == NULL);
     deleteNodeWithDescendants(&root, nama);
     printf("%s beserta keturunannya telah dihapus dari sejarah silsilah kerajan\n", temp->info.nama);
+    printTree(root->node_fs,0);
     printf("\n\tPress any key to continue . . . ");
     getch();
 }

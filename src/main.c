@@ -15,6 +15,7 @@ int count_all_member(address node) {
     
     
     //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
+    count +=count_all_member(node->node_mate);
     count +=count_all_member(node->node_fs);
     count +=count_all_member(node->node_nb);
 
