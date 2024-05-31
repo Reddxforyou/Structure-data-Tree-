@@ -89,7 +89,7 @@ int main()
             timeskip_input(Root(test));
             break;
         case 13:
-        	delete_input(Root(test)); //bugggggggggggggggggggggg
+        	delete_input(Root(test));
             break;             
         case 14:
             save_Tree_To_File("familyTree.txt", &test);
