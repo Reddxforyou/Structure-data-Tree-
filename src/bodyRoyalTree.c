@@ -374,7 +374,7 @@ void point_marriage_input(telm_familly *X)
     {
         X->node_mate = node;
     }
-    else if (node->node_mate == NULL)
+    if (node->node_mate == NULL)
     {
         node->node_mate = X;
     }
@@ -917,13 +917,13 @@ void tambah_anak(address root)
             getch();
             parent = NULL;
         }
-        // if (parent->node_mate == NULL)
-        // {
-        //     printf("Orang tua belum menikah\n");
-        //     printf("\n\tPress any key to continue . . . ");
-        //     getch();
-        //     parent = NULL;
-        // }
+        if (parent->node_mate == NULL)
+        {
+            printf("Orang tua belum menikah\n");
+            printf("\n\tPress any key to continue . . . ");
+            getch();
+            parent = NULL;
+        }
     } while (parent == NULL && strcmp(name_parent, "\n") != 0);
 
     if (parent == NULL)
@@ -1200,6 +1200,27 @@ void timeskip_input(address root){
     getch();
     system("cls");
 
+}
+
+
+int count_all_member(address node) {
+    int count = 0;
+    if (node == NULL){ // Jika node kosong, maka akan mengembalikan nilai 0
+        return 0;
+    } else{ //jika status hidup node bersifat true maka nilai count akan bertambah
+        count++;
+    }
+    if (node->node_mate != NULL)
+    {
+        count++;
+    }
+    
+    
+    //Menghitung jumlah anggota keluarga hidup pada node pasangan, anak, dan saudara
+    count +=count_all_member(node->node_fs);
+    count +=count_all_member(node->node_nb);
+
+    return count;
 }
 
 
