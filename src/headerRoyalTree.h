@@ -206,7 +206,7 @@ int countLivingFamilyMembers(address node);
 // author: Alya
 // I.S : nama pewaris takhta belum diketahui
 // F.S : nama pewaris takhta telah diketahui
-void successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
+address successorPrediction(address root, infotype name[MAX_NAME_LENGTH]);
 
 // Function untuk menghitung generasi dari anggota keluarga
 // author: Alya Naila Putri Ashadilla
@@ -228,6 +228,7 @@ void deleteNodeWithDescendants(telm_familly **root, infotype name[MAX_NAME_LENGT
 
 void cek_king(address *current);
 
+void delete_input(telm_familly *root);
 
 address createNode(dataInfo info);
 
