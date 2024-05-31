@@ -1,0 +1,34 @@
+    _________________________________________________________________________________________________________________________________
+    |I. Aturan penurunan tahta                                                                                                       |
+    |   i. Pewaris tahta kerajaan adalah anak sulung (first son) dari keturunan langsung raja.                                       |
+    |  ii. Aturan primogenetur absolut diterapkan, yang berarti bahwa putra dan putri yang berstatus sebagai anak sulung (first son) |
+    |      sama-sama memenuhi syarat untuk menjadi pewaris tahta. Ini berarti pewaris tahta tidak dibatasi oleh gender.              |
+    | iii. Dalam kondisi generasi terakhir, jika pewaris tahta (first son) meninggal maka tahta akan diwariskan ke anak selanjutnya  |
+    |      (next brother) sebagai pewaris tahta urutan pertama.                                                                      |
+    |  iv. Jika pewaris tahta tidak memiliki keturunan dan saudara kandungnya juga sudah meninggal, maka tahta dapat diwariskan      |
+    |      kepada kerabat dekat terdekat yang masih hidup, seperti sepupu atau paman/ibunya.                                         |
+    |                                                                                                                                |
+    |II. Aturan penambahan anggota keluarga kerajaan                                                                                 |
+    |   i. Raja / ratu pertama harus berumur minimal 18 tahun                                                                        |
+    |  ii. Untuk memiliki anak maka harus memiliki pasangan terlebih dahulu                                                          |
+    | iii. Anak harus berumur minimal 19 tahun lebih muda dari orang tua                                                             |
+    |  iv. Nama anak tidak boleh sama dengan anggota keluarga lain                                                                   |
+    |                                                                                                                                |
+    |III. Aturan penambahan pasangan anggota keluarga kerajaan                                                                       |
+    |   i. Umur minimal untuk memiliki pasangan adalah 18 tahun                                                                      |
+    |  ii. Umur minimal pasangan adalah 18 tahun                                                                                     |
+    | iii. Pasangan harus berlawanan jenis                                                                                           |
+    |  iv. Jumlah maksimal pasangan adalah 1                                                                                         |
+    |   v. Nama pasangan tidak boleh sama dengan anggota keluarga lain                                                               |
+    |                                                                                                                                |
+    |IV. Aturan penghapusan anggota keluarga kerajaan                                                                                |
+    |   i. Jika pohon keluarga kosong, tidak ada anggota keluarga yang dapat dihapus                                                 |
+    |  ii. Jika anggota keluarga yang dihapus adalah daun (leaf) tanpa keturunan, maka dia akan dihapus langsung                     |
+    | iii. Jika anggota keluarga yang dihapus memiliki saudara berikutnya (next brother), maka dia akan digantikan                   |
+    |      oleh saudaranya tersebut.                                                                                                 |
+    |  iv. Jika anggota keluarga yang dihapus adalah putra pertama (first son), maka putra pertama akan digantikan                   |
+    |      oleh saudara berikutnya.                                                                                                  |
+    |   v. Jika anggota keluarga yang dihapus adalah raja, maka tahtanya akan dipindahkan ke saudaranya.                             |
+    |  vi. Anggota kerajaan yang dihapus beserta semua keturunannya, yaitu putra pertama dan saudara-saudaranya,                     |
+    |      akan dihapus secara berurutan.                                                                                            |
+    |________________________________________________________________________________________________________________________________|
